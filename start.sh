@@ -11,6 +11,6 @@ echo "Collecting static files..."
 python manage.py collectstatic --noinput 2>/dev/null || true
 
 echo "Starting Django development server on port $PORT..."
-gunicorn iei_project.wsgi:application --bind
+gunicorn iei_project.wsgi:application --bind 0.0.0.0:$PORT
 
 
