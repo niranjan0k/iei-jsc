@@ -1,0 +1,130 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block title %}Members – IEI Jharkhand State Centre{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-xl">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">Members</li>
+      </ol>
+    </nav>
+    <h1 class="page-title">Committee Members</h1>
+  </div>
+</div>
+
+<section class="py-5">
+  <div class="container-xl">
+    <!-- Tabs -->
+    <ul class="nav nav-tabs member-tabs mb-4" id="memberTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="exec-tab" data-bs-toggle="tab" data-bs-target="#exec" type="button">
+          <i class="bi bi-star-fill me-2"></i>Executive Committee
+          {% if executive %}<span class="badge bg-gold ms-1">{{ executive|length }}</span>{% endif %}
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="sub-tab" data-bs-toggle="tab" data-bs-target="#sub" type="button">
+          <i class="bi bi-people-fill me-2"></i>Sub Committee
+          {% if subcommittee %}<span class="badge bg-gold ms-1">{{ subcommittee|length }}</span>{% endif %}
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="senior-tab" data-bs-toggle="tab" data-bs-target="#senior" type="button">
+          <i class="bi bi-person-badge-fill me-2"></i>Senior Engineers Forum
+          {% if senior %}<span class="badge bg-gold ms-1">{{ senior|length }}</span>{% endif %}
+        </button>
+      </li>
+    </ul>
+
+    <div class="tab-content" id="memberTabsContent">
+      <!-- Executive Committee -->
+      <div class="tab-pane fade show active" id="exec" role="tabpanel">
+        {% if executive %}
+        <div class="row g-4">
+          {% for m in executive %}
+          <div class="col-md-3 col-sm-6">
+            <div class="member-card text-center">
+              <div class="member-avatar-wrap">
+                {% if m.photo %}
+                <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="member-avatar">
+                {% else %}
+                <div class="member-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
+                {% endif %}
+              </div>
+              <h6 class="member-name mt-3 mb-1">{{ m.name }}</h6>
+              <p class="member-designation">{{ m.designation }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <i class="bi bi-people"></i>
+          <h5>No Executive Committee members listed yet.</h5>
+          <p class="text-muted">Members will be added by the administrator.</p>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Sub Committee -->
+      <div class="tab-pane fade" id="sub" role="tabpanel">
+        {% if subcommittee %}
+        <div class="row g-4">
+          {% for m in subcommittee %}
+          <div class="col-md-3 col-sm-6">
+            <div class="member-card text-center">
+              <div class="member-avatar-wrap">
+                {% if m.photo %}
+                <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="member-avatar">
+                {% else %}
+                <div class="member-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
+                {% endif %}
+              </div>
+              <h6 class="member-name mt-3 mb-1">{{ m.name }}</h6>
+              <p class="member-designation">{{ m.designation }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <i class="bi bi-people"></i>
+          <h5>No Sub Committee members listed yet.</h5>
+        </div>
+        {% endif %}
+      </div>
+
+      <!-- Senior Engineers -->
+      <div class="tab-pane fade" id="senior" role="tabpanel">
+        {% if senior %}
+        <div class="row g-4">
+          {% for m in senior %}
+          <div class="col-md-3 col-sm-6">
+            <div class="member-card text-center">
+              <div class="member-avatar-wrap">
+                {% if m.photo %}
+                <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="member-avatar">
+                {% else %}
+                <div class="member-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
+                {% endif %}
+              </div>
+              <h6 class="member-name mt-3 mb-1">{{ m.name }}</h6>
+              <p class="member-designation">{{ m.designation }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+          <i class="bi bi-people"></i>
+          <h5>No Senior Engineers Forum members listed yet.</h5>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

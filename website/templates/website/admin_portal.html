@@ -1,0 +1,479 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel – IEI Jharkhand</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:#0e1a3a;
+      --navy-2:#13234d;
+      --navy-3:#1a3a6e;
+      --gold:#f4b740;
+      --gold-2:#c9a84c;
+      --bg:#f5f6fa;
+      --text:#1f2a44;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);}
+    a{text-decoration:none;color:inherit}
+
+    /* Sidebar */
+    .admin-sidebar{
+      position:fixed;top:0;left:0;width:280px;height:100vh;
+      background:linear-gradient(180deg,var(--navy) 0%,var(--navy-2) 100%);
+      color:#fff;display:flex;flex-direction:column;overflow-y:auto;z-index:1000;
+      border-right:1px solid rgba(255,255,255,.05);
+    }
+    .admin-sidebar::-webkit-scrollbar{width:6px}
+    .admin-sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:3px}
+
+    .sidebar-brand{
+      padding:20px 22px 18px;display:flex;gap:12px;align-items:center;
+      border-bottom:2px solid var(--gold);
+    }
+    .sidebar-brand .logo{
+      width:46px;height:46px;border-radius:50%;background:#fff;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      box-shadow:0 2px 6px rgba(0,0,0,.3);
+    }
+    .sidebar-brand .logo i{font-size:24px;color:var(--navy)}
+    .sidebar-brand .brand-text{flex:1;min-width:0}
+    .sidebar-brand h2{font-size:18px;font-weight:700;margin:0;line-height:1.1}
+    .admin-pill{
+      display:inline-block;background:var(--gold);color:var(--navy);
+      font-size:11px;font-weight:700;padding:2px 12px;border-radius:4px;
+      letter-spacing:.5px;margin:4px 0 2px;
+    }
+    .sidebar-brand small{font-size:11px;color:#c9d2e8;display:block;font-weight:400}
+
+    .sidebar-section{padding:18px 22px 6px}
+    .sidebar-section-title{
+      font-size:11px;font-weight:700;letter-spacing:1.5px;
+      color:#7a8aab;text-transform:uppercase;margin-bottom:8px;
+    }
+
+    .sidebar-nav{padding:0 12px;list-style:none;margin:0}
+    .sidebar-nav li{margin-bottom:2px}
+    .sidebar-nav a{
+      display:flex;align-items:center;gap:14px;padding:11px 14px;
+      border-radius:8px;color:#cbd5e8;font-size:14px;font-weight:500;
+      transition:all .15s ease;position:relative;
+    }
+    .sidebar-nav a:hover{background:rgba(255,255,255,.06);color:#fff}
+    .sidebar-nav a .nav-icon{
+      width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+      font-size:16px;flex-shrink:0;
+    }
+    .sidebar-nav a .nav-text{flex:1}
+    .sidebar-nav a .nav-badge{
+      background:var(--gold);color:var(--navy);font-size:11px;font-weight:700;
+      min-width:24px;height:22px;border-radius:11px;
+      display:inline-flex;align-items:center;justify-content:center;padding:0 7px;
+    }
+    .sidebar-nav a.active{
+      background:linear-gradient(90deg,rgba(244,183,64,.18),rgba(244,183,64,.04));
+      color:var(--gold);font-weight:600;
+      border:1px solid rgba(244,183,64,.25);
+    }
+    .sidebar-nav a.active::before{
+      content:"";position:absolute;left:-12px;top:8px;bottom:8px;width:3px;
+      background:var(--gold);border-radius:0 3px 3px 0;
+    }
+    .sidebar-nav a.active .nav-icon{color:var(--gold)}
+
+    .sidebar-footer{
+      margin-top:auto;padding:18px 22px;border-top:1px solid rgba(255,255,255,.08);
+      font-size:12px;color:#7a8aab;
+    }
+    .sidebar-footer a{color:var(--gold);font-weight:600}
+
+    /* Main */
+    .admin-main{margin-left:280px;min-height:100vh}
+    .admin-topbar{
+      background:#fff;border-bottom:1px solid var(--border);
+      padding:14px 32px;display:flex;justify-content:space-between;align-items:center;
+      position:sticky;top:0;z-index:50;
+    }
+    .topbar-search{
+      flex:1;max-width:420px;position:relative;
+    }
+    .topbar-search input{
+      width:100%;border:1px solid var(--border);border-radius:8px;
+      padding:9px 14px 9px 38px;font-size:14px;background:var(--bg);
+    }
+    .topbar-search i{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--muted)}
+    .topbar-actions{display:flex;align-items:center;gap:14px}
+    .topbar-actions .btn-icon{
+      width:38px;height:38px;border-radius:50%;background:var(--bg);
+      display:flex;align-items:center;justify-content:center;color:var(--navy);
+      border:none;font-size:16px;position:relative;cursor:pointer;
+    }
+    .topbar-actions .btn-icon .dot{
+      position:absolute;top:8px;right:9px;width:8px;height:8px;
+      background:#ef4444;border-radius:50%;border:2px solid #fff;
+    }
+    .user-chip{
+      display:flex;align-items:center;gap:10px;padding:6px 14px 6px 6px;
+      border-radius:30px;background:var(--bg);
+    }
+    .user-chip .avatar{
+      width:32px;height:32px;border-radius:50%;background:var(--navy-3);
+      color:#fff;display:flex;align-items:center;justify-content:center;
+      font-weight:700;font-size:13px;
+    }
+    .user-chip .uname{font-size:13px;font-weight:600;line-height:1.1}
+    .user-chip .urole{font-size:11px;color:var(--muted)}
+
+    .admin-content{padding:32px}
+    .page-head h1{font-size:30px;font-weight:800;color:var(--navy);margin:0 0 6px}
+    .page-head p{color:var(--muted);margin:0 0 24px;font-size:14px}
+
+    /* Stat cards */
+    .stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:28px}
+    .stat-card{
+      background:#fff;border:1px solid var(--border);border-radius:14px;
+      padding:20px;display:flex;align-items:center;gap:16px;
+      transition:all .2s ease;
+    }
+    .stat-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(14,26,58,.08);border-color:var(--gold)}
+    .stat-icon{
+      width:54px;height:54px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:22px;flex-shrink:0;
+    }
+    .si-purple{background:#f3e8ff;color:#7c3aed}
+    .si-blue{background:#dbeafe;color:#2563eb}
+    .si-amber{background:#fef3c7;color:#d97706}
+    .si-pink{background:#fce7f3;color:#db2777}
+    .si-green{background:#d1fae5;color:#059669}
+    .si-red{background:#fee2e2;color:#dc2626}
+    .stat-num{font-size:28px;font-weight:800;color:var(--navy);line-height:1}
+    .stat-label{font-size:13px;color:var(--muted);margin-top:4px}
+    .stat-trend{font-size:12px;font-weight:600;color:#059669;margin-top:6px}
+
+    /* Section card */
+    .section-card{
+      background:#fff;border:1px solid var(--border);border-radius:14px;
+      overflow:hidden;margin-bottom:24px;
+    }
+    .section-head{
+      padding:18px 22px;border-bottom:1px solid var(--border);
+      display:flex;justify-content:space-between;align-items:center;
+    }
+    .section-head h5{margin:0;font-size:16px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:10px}
+    .section-head h5 i{color:var(--navy-3)}
+    .section-head .btn-sm-gold{
+      background:var(--gold);color:var(--navy);border:none;
+      padding:7px 16px;border-radius:8px;font-size:13px;font-weight:600;
+    }
+    .section-body{padding:0}
+    .table-clean{width:100%;border-collapse:collapse}
+    .table-clean th{
+      background:#f9fafb;color:var(--muted);font-size:12px;font-weight:700;
+      letter-spacing:.5px;text-transform:uppercase;padding:13px 22px;text-align:left;
+      border-bottom:1px solid var(--border);
+    }
+    .table-clean td{padding:14px 22px;border-bottom:1px solid var(--border);font-size:14px}
+    .table-clean tr:last-child td{border-bottom:0}
+    .table-clean .row-name{font-weight:600;color:var(--navy)}
+    .table-clean .row-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    .badge-grade{
+      background:#eef2ff;color:#3730a3;padding:4px 10px;border-radius:6px;
+      font-size:12px;font-weight:600;
+    }
+    .badge-status{padding:4px 10px;border-radius:6px;font-size:12px;font-weight:600}
+    .bs-unread{background:#fef3c7;color:#92400e}
+    .bs-read{background:#d1fae5;color:#065f46}
+
+    .quick-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;padding:22px}
+    .quick-action{
+      display:flex;align-items:center;gap:12px;padding:14px;
+      border:1px solid var(--border);border-radius:10px;color:var(--text);
+      transition:all .15s ease;background:#fff;
+    }
+    .quick-action:hover{border-color:var(--gold);background:#fffbeb;color:var(--navy)}
+    .quick-action i{color:var(--navy-3);font-size:20px}
+    .quick-action span{font-size:13px;font-weight:600}
+
+    @media (max-width:992px){
+      .admin-sidebar{transform:translateX(-100%);transition:transform .25s ease}
+      .admin-sidebar.show{transform:none}
+      .admin-main{margin-left:0}
+      .toggle-sidebar{display:flex !important}
+    }
+    .toggle-sidebar{
+      display:none;width:38px;height:38px;border-radius:8px;background:var(--navy);
+      color:#fff;align-items:center;justify-content:center;border:none;font-size:18px;
+    }
+  </style>
+</head>
+<body>
+
+<aside class="admin-sidebar" id="sidebar">
+  <div class="sidebar-brand">
+    <div class="logo"><i class="bi bi-buildings-fill"></i></div>
+    <div class="brand-text">
+      <h2>Admin Panel</h2>
+      <span class="admin-pill">ADMIN</span>
+      <small>IEI Jharkhand State Centre</small>
+    </div>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Overview</div>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="{% url 'admin_portal' %}" class="active">
+      <span class="nav-icon"><i class="bi bi-speedometer2"></i></span>
+      <span class="nav-text">Dashboard</span>
+    </a></li>
+    <li><a href="/django-admin/website/member/">
+      <span class="nav-icon"><i class="bi bi-people-fill"></i></span>
+      <span class="nav-text">Members</span>
+      <span class="nav-badge">{{ stats.member_count }}</span>
+    </a></li>
+    <li><a href="/django-admin/website/event/">
+      <span class="nav-icon"><i class="bi bi-calendar-event-fill"></i></span>
+      <span class="nav-text">Events</span>
+    </a></li>
+    <li><a href="/django-admin/website/contactmessage/">
+      <span class="nav-icon"><i class="bi bi-activity"></i></span>
+      <span class="nav-text">Activity Log</span>
+      {% if stats.message_count %}<span class="nav-badge">{{ stats.message_count }}</span>{% endif %}
+    </a></li>
+  </ul>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">Manage</div>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="/django-admin/website/download/">
+      <span class="nav-icon"><i class="bi bi-file-earmark-text-fill"></i></span>
+      <span class="nav-text">Publications</span>
+    </a></li>
+    <li><a href="/django-admin/website/announcement/">
+      <span class="nav-icon" style="color:var(--gold)"><i class="bi bi-megaphone-fill"></i></span>
+      <span class="nav-text">Circulars</span>
+      {% if stats.announcement_count %}<span class="nav-badge">{{ stats.announcement_count }}</span>{% endif %}
+    </a></li>
+    <li><a href="/django-admin/website/leaderprofile/">
+      <span class="nav-icon" style="color:var(--gold)"><i class="bi bi-trophy-fill"></i></span>
+      <span class="nav-text">Awards & Leadership</span>
+    </a></li>
+    <li><a href="/django-admin/website/contactmessage/">
+      <span class="nav-icon"><i class="bi bi-envelope-fill"></i></span>
+      <span class="nav-text">Email Members</span>
+    </a></li>
+    <li><a href="/django-admin/website/carouselimage/">
+      <span class="nav-icon"><i class="bi bi-images"></i></span>
+      <span class="nav-text">Homepage Carousel</span>
+    </a></li>
+  </ul>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">System</div>
+  </div>
+  <ul class="sidebar-nav">
+    <li><a href="/django-admin/" target="_blank">
+      <span class="nav-icon"><i class="bi bi-grid-3x3-gap-fill"></i></span>
+      <span class="nav-text">Full CMS</span>
+    </a></li>
+    <li><a href="/" target="_blank">
+      <span class="nav-icon"><i class="bi bi-globe2"></i></span>
+      <span class="nav-text">View Website</span>
+    </a></li>
+    <li><a href="{% url 'logout' %}">
+      <span class="nav-icon"><i class="bi bi-box-arrow-right"></i></span>
+      <span class="nav-text">Logout</span>
+    </a></li>
+  </ul>
+
+  <div class="sidebar-footer">
+    &copy; IEI Jharkhand <br>
+    <a href="/">www.iei-jharkhand.org</a>
+  </div>
+</aside>
+
+<div class="admin-main">
+  <div class="admin-topbar">
+    <button class="toggle-sidebar" onclick="document.getElementById('sidebar').classList.toggle('show')">
+      <i class="bi bi-list"></i>
+    </button>
+    <div class="topbar-search">
+      <i class="bi bi-search"></i>
+      <input type="text" placeholder="Search members, events, publications…">
+    </div>
+    <div class="topbar-actions">
+      <button class="btn-icon" title="Notifications">
+        <i class="bi bi-bell-fill"></i>
+        {% if stats.message_count %}<span class="dot"></span>{% endif %}
+      </button>
+      <button class="btn-icon" title="Help"><i class="bi bi-question-circle"></i></button>
+      <div class="user-chip">
+        <div class="avatar">{{ user.username|slice:":1"|upper }}</div>
+        <div>
+          <div class="uname">{{ user.get_full_name|default:user.username }}</div>
+          <div class="urole">Administrator</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-content">
+    <div class="page-head">
+      <h1>Admin Dashboard</h1>
+      <p>Welcome back, {{ user.get_full_name|default:user.username }}. Here's your management overview for today.</p>
+    </div>
+
+    <!-- Stats -->
+    <div class="stat-grid">
+      <a href="/django-admin/website/member/" class="stat-card">
+        <div class="stat-icon si-purple"><i class="bi bi-people-fill"></i></div>
+        <div>
+          <div class="stat-num">{{ stats.member_count }}</div>
+          <div class="stat-label">Total Members</div>
+          <div class="stat-trend"><i class="bi bi-arrow-up-short"></i>Active roster</div>
+        </div>
+      </a>
+      <a href="/django-admin/website/event/" class="stat-card">
+        <div class="stat-icon si-blue"><i class="bi bi-calendar-event-fill"></i></div>
+        <div>
+          <div class="stat-num">{{ stats.event_count }}</div>
+          <div class="stat-label">Events Hosted</div>
+          <div class="stat-trend"><i class="bi bi-arrow-up-short"></i>This year</div>
+        </div>
+      </a>
+      <a href="/django-admin/website/announcement/" class="stat-card">
+        <div class="stat-icon si-amber"><i class="bi bi-megaphone-fill"></i></div>
+        <div>
+          <div class="stat-num">{{ stats.announcement_count }}</div>
+          <div class="stat-label">Active Circulars</div>
+          <div class="stat-trend">Live on homepage</div>
+        </div>
+      </a>
+      <a href="/django-admin/website/download/" class="stat-card">
+        <div class="stat-icon si-pink"><i class="bi bi-file-earmark-text-fill"></i></div>
+        <div>
+          <div class="stat-num">{{ stats.download_count }}</div>
+          <div class="stat-label">Publications</div>
+          <div class="stat-trend">Available to download</div>
+        </div>
+      </a>
+      <a href="/django-admin/website/carouselimage/" class="stat-card">
+        <div class="stat-icon si-green"><i class="bi bi-images"></i></div>
+        <div>
+          <div class="stat-num">{{ stats.carousel_count }}</div>
+          <div class="stat-label">Carousel Slides</div>
+          <div class="stat-trend">Homepage banner</div>
+        </div>
+      </a>
+      <a href="/django-admin/website/contactmessage/" class="stat-card">
+        <div class="stat-icon si-red"><i class="bi bi-envelope-fill"></i></div>
+        <div>
+          <div class="stat-num">{{ stats.message_count }}</div>
+          <div class="stat-label">Unread Messages</div>
+          <div class="stat-trend" style="color:#dc2626"><i class="bi bi-bell-fill"></i> Needs attention</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Member Management -->
+    <div class="section-card">
+      <div class="section-head">
+        <h5><i class="bi bi-people-fill"></i> Member Management</h5>
+        <a href="/django-admin/website/member/add/" class="btn-sm-gold">+ Add Member</a>
+      </div>
+      <div class="section-body">
+        <table class="table-clean">
+          <thead>
+            <tr><th>Name</th><th>Designation</th><th>Category</th></tr>
+          </thead>
+          <tbody>
+            {% for m in recent_members %}
+            <tr>
+              <td>
+                <div class="row-name">{{ m.name }}</div>
+                <div class="row-sub">IEI/{{ m.id|stringformat:"04d" }}</div>
+              </td>
+              <td>{{ m.designation|default:"Member" }}</td>
+              <td><span class="badge-grade">{{ m.get_category_display }}</span></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="3" style="text-align:center;color:var(--muted);padding:30px">No members added yet. <a href="/django-admin/website/member/add/" style="color:var(--navy-3);font-weight:600">Add the first one →</a></td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Two-col: Recent Messages + Quick Actions -->
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:24px">
+      <div class="section-card" style="margin-bottom:0">
+        <div class="section-head">
+          <h5><i class="bi bi-envelope-fill"></i> Recent Contact Messages</h5>
+          <a href="/django-admin/website/contactmessage/" class="btn-sm-gold">View All</a>
+        </div>
+        <div class="section-body">
+          <table class="table-clean">
+            <tbody>
+              {% for msg in recent_messages %}
+              <tr>
+                <td>
+                  <div class="row-name">{{ msg.name }}</div>
+                  <div class="row-sub">{{ msg.subject }}</div>
+                </td>
+                <td style="text-align:right">
+                  <div><span class="badge-status {% if msg.is_read %}bs-read{% else %}bs-unread{% endif %}">{% if msg.is_read %}Read{% else %}New{% endif %}</span></div>
+                  <div class="row-sub" style="margin-top:4px">{{ msg.received_at|date:"d M, H:i" }}</div>
+                </td>
+              </tr>
+              {% empty %}
+              <tr><td style="text-align:center;color:var(--muted);padding:30px">No messages yet</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="section-card" style="margin-bottom:0">
+        <div class="section-head">
+          <h5><i class="bi bi-lightning-charge-fill"></i> Quick Actions</h5>
+        </div>
+        <div class="quick-grid">
+          <a href="/django-admin/website/event/add/" class="quick-action">
+            <i class="bi bi-calendar-plus"></i><span>New Event</span>
+          </a>
+          <a href="/django-admin/website/announcement/add/" class="quick-action">
+            <i class="bi bi-megaphone"></i><span>New Circular</span>
+          </a>
+          <a href="/django-admin/website/member/add/" class="quick-action">
+            <i class="bi bi-person-plus"></i><span>Add Member</span>
+          </a>
+          <a href="/django-admin/website/download/add/" class="quick-action">
+            <i class="bi bi-cloud-upload"></i><span>Upload Document</span>
+          </a>
+          <a href="/django-admin/website/carouselimage/add/" class="quick-action">
+            <i class="bi bi-image"></i><span>Add Banner</span>
+          </a>
+          <a href="/django-admin/website/leaderprofile/" class="quick-action">
+            <i class="bi bi-person-badge"></i><span>Edit Leadership</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.querySelectorAll('.admin-content a, .admin-content .stat-card').forEach(el=>{
+    el.addEventListener('click',e=>{ /* nav placeholder */ });
+  });
+</script>
+</body>
+</html>

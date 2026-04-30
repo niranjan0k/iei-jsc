@@ -1,0 +1,317 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block title %}IEI Jharkhand State Centre – Home{% endblock %}
+
+{% block extra_head %}
+<style>
+  /* ===== Home Page Wireframe Layout ===== */
+  .home-section{padding:28px 0}
+
+  /* Carousel */
+  .home-carousel{
+    border:1px solid #e5e7eb;border-radius:10px;overflow:hidden;
+    box-shadow:0 4px 16px rgba(14,26,58,.08);
+  }
+  .home-carousel .carousel-item img,
+  .home-carousel .carousel-placeholder{
+    height:380px;width:100%;object-fit:cover;
+  }
+
+  /* Two-column row 1: marquee + (skill dev + services) */
+  .home-row-1{display:grid;grid-template-columns:1fr 1.6fr;gap:22px;margin-top:28px}
+  @media(max-width:991px){.home-row-1{grid-template-columns:1fr}}
+
+  .vertical-marquee-card{
+    background:linear-gradient(180deg,#1a3a6e 0%,#0e1a3a 100%);
+    border-radius:12px;color:#fff;padding:0;overflow:hidden;
+    height:520px;display:flex;flex-direction:column;
+    box-shadow:0 6px 18px rgba(14,26,58,.18);
+  }
+  .vm-head{
+    background:#c9a84c;color:#0e1a3a;padding:14px 18px;font-weight:800;
+    text-transform:uppercase;letter-spacing:.6px;font-size:14px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .vm-body{flex:1;overflow:hidden;position:relative;padding:14px 0}
+  .vm-track{
+    animation:vmScroll 30s linear infinite;display:flex;flex-direction:column;
+  }
+  .vm-track:hover{animation-play-state:paused}
+  @keyframes vmScroll{
+    0%{transform:translateY(0)}
+    100%{transform:translateY(-50%)}
+  }
+  .vm-item{
+    padding:12px 18px;border-bottom:1px dashed rgba(244,183,64,.25);
+    color:#fff;text-decoration:none;display:block;font-size:14px;line-height:1.5;
+    transition:background .2s;
+  }
+  .vm-item:hover{background:rgba(244,183,64,.1);color:#f4b740}
+  .vm-item .vm-date{
+    display:inline-block;background:#c9a84c;color:#0e1a3a;font-size:11px;
+    font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:5px;
+  }
+  .vm-item.placeholder{color:#c9d2e8;border-bottom:none}
+
+  /* Right column: skill dev banner + services */
+  .home-r1-right{display:grid;grid-template-rows:auto 1fr;gap:22px}
+
+  .skill-dev-banner{
+    background:linear-gradient(135deg,#c9a84c 0%,#f4b740 100%);
+    color:#0e1a3a;border-radius:12px;padding:24px 28px;
+    display:flex;justify-content:space-between;align-items:center;gap:18px;
+    box-shadow:0 6px 16px rgba(244,183,64,.35);
+    text-decoration:none;transition:transform .2s ease;
+  }
+  .skill-dev-banner:hover{transform:translateY(-3px);color:#0e1a3a}
+  .skill-dev-banner h3{font-size:18px;font-weight:800;margin:0 0 4px;text-transform:uppercase;letter-spacing:.5px}
+  .skill-dev-banner p{font-size:13px;margin:0;opacity:.85}
+  .skill-dev-banner .cta-btn{
+    background:#0e1a3a;color:#f4b740;padding:10px 22px;border-radius:30px;
+    font-weight:700;font-size:13px;white-space:nowrap;text-transform:uppercase;
+    letter-spacing:.5px;flex-shrink:0;
+  }
+  .skill-dev-banner .sd-icon{font-size:42px;flex-shrink:0;opacity:.9}
+
+  /* Services */
+  .services-card{
+    background:#fff;border:1px solid #e5e7eb;border-radius:12px;
+    padding:0;overflow:hidden;box-shadow:0 4px 14px rgba(14,26,58,.06);
+  }
+  .services-card .sv-head{
+    background:#1a3a6e;color:#fff;padding:14px 20px;font-weight:700;
+    display:flex;align-items:center;gap:10px;font-size:15px;
+    border-bottom:3px solid #c9a84c;
+  }
+  .services-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:0;
+  }
+  .service-item{
+    padding:18px 14px;text-align:center;border-right:1px solid #f1f3f7;
+    border-bottom:1px solid #f1f3f7;text-decoration:none;color:#1a3a6e;
+    transition:all .2s ease;display:flex;flex-direction:column;align-items:center;gap:8px;
+  }
+  .service-item:hover{background:#fffbeb;color:#0e1a3a;transform:scale(1.02)}
+  .service-item:nth-child(3n){border-right:none}
+  .service-item:nth-last-child(-n+3){border-bottom:none}
+  .service-item i{font-size:26px;color:#c9a84c}
+  .service-item span{font-size:12px;font-weight:600;line-height:1.3}
+
+  /* Leadership rows */
+  .leader-row{
+    display:grid;gap:22px;margin-top:28px;align-items:stretch;
+    background:#fff;border:1px solid #e5e7eb;border-radius:12px;
+    box-shadow:0 4px 14px rgba(14,26,58,.06);overflow:hidden;
+  }
+  .leader-row.chairman-row{grid-template-columns:280px 1fr}
+  .leader-row.secretary-row{grid-template-columns:1fr 280px}
+  @media(max-width:768px){
+    .leader-row.chairman-row,
+    .leader-row.secretary-row{grid-template-columns:1fr}
+  }
+
+  .leader-photo-box{
+    background:#f5f6fa;display:flex;align-items:center;justify-content:center;
+    padding:24px;
+  }
+  .leader-photo-box img{
+    width:100%;max-width:220px;aspect-ratio:1/1;object-fit:cover;
+    border-radius:50%;border:5px solid #c9a84c;
+    box-shadow:0 6px 16px rgba(14,26,58,.2);
+  }
+  .leader-photo-box .ph-fallback{
+    width:200px;height:200px;border-radius:50%;background:#1a3a6e;
+    display:flex;align-items:center;justify-content:center;color:#c9a84c;
+    font-size:72px;border:5px solid #c9a84c;
+  }
+  .leader-text-box{padding:28px 32px;display:flex;flex-direction:column;justify-content:center}
+  .leader-role-tag{
+    display:inline-block;background:#c9a84c;color:#0e1a3a;
+    font-size:11px;font-weight:800;padding:4px 14px;border-radius:4px;
+    text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;align-self:flex-start;
+  }
+  .leader-text-box h3{font-size:24px;color:#0e1a3a;font-weight:700;margin:0 0 4px}
+  .leader-text-box .leader-sub{color:#6b7280;font-size:14px;margin:0 0 14px;font-style:italic}
+  .leader-text-box .leader-bio{color:#374151;font-size:14px;line-height:1.7;margin:0}
+  .leader-text-box .leader-quote{
+    border-left:3px solid #c9a84c;padding-left:14px;margin-top:14px;
+    font-style:italic;color:#1a3a6e;font-size:14px;
+  }
+
+  /* Section heading bar (matches wireframe boxes) */
+  .home-row-1, .leader-row, .home-carousel{margin-bottom:0}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- 5-Image Carousel -->
+<section class="home-section pt-3 pb-0">
+  <div class="container-xl">
+    <div id="heroCarousel" class="carousel slide carousel-fade home-carousel" data-bs-ride="carousel" data-bs-interval="4500">
+      <div class="carousel-indicators">
+        {% for img in carousels %}
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="{{ forloop.counter0 }}"
+          {% if forloop.first %}class="active"{% endif %}></button>
+        {% empty %}
+        <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+        {% endfor %}
+      </div>
+      <div class="carousel-inner">
+        {% for img in carousels %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <img src="{{ img.image.url }}" alt="{{ img.caption }}">
+          {% if img.caption %}
+          <div class="carousel-caption">
+            <h2 class="carousel-title">{{ img.caption }}</h2>
+          </div>
+          {% endif %}
+        </div>
+        {% empty %}
+        {% for i in "12345" %}
+        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="carousel-placeholder d-flex align-items-center justify-content-center" style="background:linear-gradient(135deg,#1a3a6e,#0e1a3a)">
+            <div class="text-center text-white">
+              <div class="placeholder-logo mb-3" style="font-size:64px;font-weight:800;color:#c9a84c">IEI</div>
+              <h2 class="display-6 fw-bold">Slide {{ forloop.counter }}</h2>
+              <p class="mt-2">Jharkhand State Centre, Ranchi</p>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Row 1: Vertical Marquee | Skill Dev + Services -->
+<section class="home-section">
+  <div class="container-xl">
+    <div class="home-row-1">
+
+      <!-- Vertical Marquee -->
+      <div class="vertical-marquee-card">
+        <div class="vm-head">
+          <i class="bi bi-broadcast"></i> Latest in IEI Jharkhand State Centre
+        </div>
+        <div class="vm-body">
+          <div class="vm-track">
+            {% for ann in announcements %}
+            <a href="{% if ann.link %}{{ ann.link }}{% else %}#{% endif %}" class="vm-item" {% if ann.link %}target="_blank"{% endif %}>
+              <span class="vm-date">{{ ann.created_at|date:"d M Y" }}</span><br>
+              {{ ann.title }}
+            </a>
+            {% empty %}
+            <div class="vm-item placeholder">
+              <span class="vm-date">{% now "d M Y" %}</span><br>
+              No announcements yet — check back soon for updates from IEI Jharkhand.
+            </div>
+            {% endfor %}
+            <!-- Duplicate for seamless scroll -->
+            {% for ann in announcements %}
+            <a href="{% if ann.link %}{{ ann.link }}{% else %}#{% endif %}" class="vm-item" {% if ann.link %}target="_blank"{% endif %}>
+              <span class="vm-date">{{ ann.created_at|date:"d M Y" }}</span><br>
+              {{ ann.title }}
+            </a>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Right column: Skill Dev banner + Services -->
+      <div class="home-r1-right">
+
+        <a href="{{ skill_dev_url|default:'#' }}" target="_blank" class="skill-dev-banner">
+          <i class="bi bi-mortarboard-fill sd-icon"></i>
+          <div class="flex-grow-1">
+            <h3>Skill Development Programs</h3>
+            <p>Registration is now open — boost your engineering career with certified IEI training</p>
+          </div>
+          <span class="cta-btn">Click Here →</span>
+        </a>
+
+        <div class="services-card">
+          <div class="sv-head"><i class="bi bi-grid-3x3-gap-fill"></i> Our Services</div>
+          <div class="services-grid">
+            <a href="{% url 'about' %}" class="service-item">
+              <i class="bi bi-mortarboard-fill"></i><span>Continuing Education</span>
+            </a>
+            <a href="{% url 'about' %}" class="service-item">
+              <i class="bi bi-patch-check-fill"></i><span>Professional Certification</span>
+            </a>
+            <a href="{% url 'members' %}" class="service-item">
+              <i class="bi bi-diagram-3-fill"></i><span>Networking</span>
+            </a>
+            <a href="{% url 'about' %}" class="service-item">
+              <i class="bi bi-lightbulb-fill"></i><span>R&amp;D Promotion</span>
+            </a>
+            <a href="{% url 'downloads' %}" class="service-item">
+              <i class="bi bi-book-fill"></i><span>Technical Publications</span>
+            </a>
+            <a href="{% url 'about' %}" class="service-item">
+              <i class="bi bi-trophy-fill"></i><span>Awards &amp; Recognition</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Row 2: Chairman Photo | Chairman Profile -->
+{% if chairman %}
+<section class="home-section pt-2">
+  <div class="container-xl">
+    <div class="leader-row chairman-row">
+      <div class="leader-photo-box">
+        {% if chairman.photo %}
+        <img src="{{ chairman.photo.url }}" alt="{{ chairman.name }}">
+        {% else %}
+        <div class="ph-fallback"><i class="bi bi-person-fill"></i></div>
+        {% endif %}
+      </div>
+      <div class="leader-text-box">
+        <span class="leader-role-tag">Chairman, IEI Jharkhand</span>
+        <h3>{{ chairman.name }}</h3>
+        <p class="leader-sub">{{ chairman.title }}</p>
+        <p class="leader-bio">{{ chairman.bio|truncatewords:60 }}</p>
+        <p class="leader-quote">"Together we shall continue to advance engineering excellence and serve the engineering community of Jharkhand."</p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- Row 3: Secretary Profile | Secretary Photo -->
+{% if secretary %}
+<section class="home-section pt-2">
+  <div class="container-xl">
+    <div class="leader-row secretary-row">
+      <div class="leader-text-box">
+        <span class="leader-role-tag">Honorary Secretary, IEI Jharkhand</span>
+        <h3>{{ secretary.name }}</h3>
+        <p class="leader-sub">{{ secretary.title }}</p>
+        <p class="leader-bio">{{ secretary.bio|truncatewords:60 }}</p>
+        <p class="leader-quote">"Our mission is to nurture engineering talent and provide a vibrant platform for professional growth across all disciplines."</p>
+      </div>
+      <div class="leader-photo-box">
+        {% if secretary.photo %}
+        <img src="{{ secretary.photo.url }}" alt="{{ secretary.name }}">
+        {% else %}
+        <div class="ph-fallback"><i class="bi bi-person-fill"></i></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% endblock %}

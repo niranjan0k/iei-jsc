@@ -1,0 +1,84 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block title %}Event Gallery – IEI Jharkhand State Centre{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-xl">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item active">Event Gallery</li>
+      </ol>
+    </nav>
+    <h1 class="page-title">Event Gallery</h1>
+  </div>
+</div>
+
+<section class="py-5">
+  <div class="container-xl">
+    {% if page_obj.object_list %}
+    <div class="row g-4">
+      {% for event in page_obj %}
+      <div class="col-md-4">
+        <a href="{% url 'event_detail' event.pk %}" class="event-card-link">
+          <div class="event-card">
+            <div class="event-img-wrap">
+              {% if event.cover_image %}
+              <img src="{{ event.cover_image.url }}" alt="{{ event.name }}" class="event-img">
+              {% else %}
+              <div class="event-img-placeholder"><i class="bi bi-camera-fill"></i></div>
+              {% endif %}
+              <div class="event-photo-count">
+                <i class="bi bi-images me-1"></i>{{ event.photo_count }} Photos
+              </div>
+            </div>
+            <div class="event-body">
+              <h5 class="event-name">{{ event.name }}</h5>
+              <p class="event-date"><i class="bi bi-calendar3 me-2"></i>{{ event.event_date|date:"d M Y" }}</p>
+              <p class="event-desc">{{ event.description|truncatewords:20 }}</p>
+              <span class="btn btn-sm btn-outline-navy">View Photos <i class="bi bi-arrow-right ms-1"></i></span>
+            </div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <nav class="mt-4" aria-label="Event pagination">
+      <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+            <i class="bi bi-chevron-left"></i> Previous
+          </a>
+        </li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+        <li class="page-item {% if page_obj.number == num %}active{% endif %}">
+          <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+        </li>
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+          <a class="page-link" href="?page={{ page_obj.next_page_number }}">
+            Next <i class="bi bi-chevron-right"></i>
+          </a>
+        </li>
+        {% endif %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="empty-state">
+      <i class="bi bi-camera"></i>
+      <h5>No events added yet.</h5>
+      <p class="text-muted">Event photos and galleries will appear here. Please check back soon!</p>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

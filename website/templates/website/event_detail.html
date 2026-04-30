@@ -1,0 +1,71 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block title %}{{ event.name }} – IEI Jharkhand{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div class="container-xl">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'events' %}">Events</a></li>
+        <li class="breadcrumb-item active">{{ event.name }}</li>
+      </ol>
+    </nav>
+    <h1 class="page-title">{{ event.name }}</h1>
+    <p class="page-subtitle"><i class="bi bi-calendar3 me-2"></i>{{ event.event_date|date:"d F Y" }}</p>
+  </div>
+</div>
+
+<section class="py-5">
+  <div class="container-xl">
+    <div class="row mb-4">
+      <div class="col-lg-8">
+        <p class="lead">{{ event.description }}</p>
+      </div>
+      <div class="col-lg-4 text-lg-end">
+        <a href="{% url 'events' %}" class="btn btn-outline-navy">
+          <i class="bi bi-arrow-left me-2"></i>Back to All Events
+        </a>
+      </div>
+    </div>
+
+    {% if photos %}
+    <div class="row g-3">
+      {% for photo in photos %}
+      <div class="col-md-3 col-sm-6">
+        <a href="{{ photo.image.url }}" class="glightbox event-photo-link" data-gallery="event-gallery"
+           data-description="{% if photo.caption %}{{ photo.caption }}{% else %}{{ event.name }}{% endif %}">
+          <div class="gallery-thumb">
+            <img src="{{ photo.image.url }}" alt="{{ photo.caption|default:event.name }}" class="gallery-thumb-img">
+            <div class="gallery-overlay">
+              <i class="bi bi-zoom-in"></i>
+            </div>
+          </div>
+        </a>
+        {% if photo.caption %}
+        <p class="gallery-caption">{{ photo.caption }}</p>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <i class="bi bi-images"></i>
+      <h5>No photos uploaded for this event yet.</h5>
+    </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+<script>
+  const lightbox = GLightbox({ selector: '.glightbox', touchNavigation: true, loop: true });
+</script>
+{% endblock %}
