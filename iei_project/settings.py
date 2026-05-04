@@ -42,12 +42,13 @@ JAZZMIN_SETTINGS = {
     # Top Menu
     'topmenu_links': [
         {'name': 'View Website', 'url': '/', 'new_window': True, 'icon': 'fas fa-globe'},
-        {'name': 'Admin Portal', 'url': '/admin-portal/', 'icon': 'fas fa-tachometer-alt'},
+        {'name': 'Admin Portal', 'url': '/django-admin/', 'icon': 'fas fa-tachometer-alt'},
         {'name': 'Contact Messages', 'model': 'website.contactmessage'},
     ],
 
     # Side Menu
     'show_sidebar': True,
+    'hide_footer': True,
     'navigation_expanded': True,
     'hide_apps': [],
     'hide_models': [],
@@ -94,6 +95,9 @@ JAZZMIN_SETTINGS = {
         'auth.user': 'collapsible',
         'auth.group': 'vertical_tabs',
     },
+
+    # Custom CSS (optional)
+    "custom_css": "css/admin-custom.css",
 }
 
 JAZZMIN_UI_TWEAKS = {

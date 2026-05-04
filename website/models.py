@@ -90,7 +90,7 @@ class Member(models.Model):
     CATEGORY_CHOICES = [
         ('executive', 'Executive Committee'),
         ('subcommittee', 'Sub Committee'),
-        ('senior_engineers', 'Senior Engineers Forum'),
+        # ('senior_engineers', 'Senior Engineers Forum'),
     ]
 
     name = models.CharField(max_length=255, verbose_name='Name')

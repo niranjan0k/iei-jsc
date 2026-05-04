@@ -51,8 +51,8 @@
     display:inline-block;background:#c9a84c;color:#0e1a3a;font-size:11px;
     font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:5px;
   }
-  .vm-item.placeholder{color:#c9d2e8;border-bottom:none}
-
+  .vm-item.placeholder{border-bottom:none}
+  .placeholder{ background-color: #5e79bb;opacity: 0.9;}
   /* Right column: skill dev banner + services */
   .home-r1-right{display:grid;grid-template-rows:auto 1fr;gap:22px}
 
@@ -87,7 +87,7 @@
     display:grid;grid-template-columns:repeat(3,1fr);gap:0;
   }
   .service-item{
-    padding:18px 14px;text-align:center;border-right:1px solid #f1f3f7;
+    padding:40px 20px;text-align:center;border-right:1px solid #f1f3f7;
     border-bottom:1px solid #f1f3f7;text-decoration:none;color:#1a3a6e;
     transition:all .2s ease;display:flex;flex-direction:column;align-items:center;gap:8px;
   }
@@ -240,23 +240,23 @@
         <div class="services-card">
           <div class="sv-head"><i class="bi bi-grid-3x3-gap-fill"></i> Our Services</div>
           <div class="services-grid">
-            <a href="{% url 'about' %}" class="service-item">
-              <i class="bi bi-mortarboard-fill"></i><span>Continuing Education</span>
+            <a href="https://www.ieindia.org/web/becomemember" class="service-item">
+              <i class="bi bi-diagram-3-fill"></i><span>Become a Member</span>
             </a>
-            <a href="{% url 'about' %}" class="service-item">
-              <i class="bi bi-patch-check-fill"></i><span>Professional Certification</span>
+            <a href="https://www.ieindia.org/web/certification/charteredengg" class="service-item">
+              <i class="bi bi-patch-check-fill"></i><span>Chartered Engineers Certification</span>
             </a>
-            <a href="{% url 'members' %}" class="service-item">
-              <i class="bi bi-diagram-3-fill"></i><span>Networking</span>
+            <a href="https://ipanel.ieindia.org/AdminUI/ResultsUI/IEI_Results.html?v20251205.1" class="service-item">
+              <i class="bi bi-mortarboard-fill"></i><span>Section A &amp; B Examination</span>
             </a>
-            <a href="{% url 'about' %}" class="service-item">
-              <i class="bi bi-lightbulb-fill"></i><span>R&amp;D Promotion</span>
+            <a href="https://www.ieindia.org/web/certification/pengg" class="service-item">
+              <i class="bi bi-patch-check-fill"></i><span>Professional Engineer Certification</span>
             </a>
-            <a href="{% url 'downloads' %}" class="service-item">
-              <i class="bi bi-book-fill"></i><span>Technical Publications</span>
+            <a href="https://www.ieindia.org/web/publication" class="service-item">
+              <i class="bi bi-book-fill"></i><span>Journal &amp; Publications</span>
             </a>
-            <a href="{% url 'about' %}" class="service-item">
-              <i class="bi bi-trophy-fill"></i><span>Awards &amp; Recognition</span>
+            <a href="#" class="service-item">
+              <i class="bi bi-cloud-upload"></i><span>Submit your Paper to IEI-Springer</span>
             </a>
           </div>
         </div>

@@ -88,7 +88,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_staff:
             login(request, user)
-            return redirect('admin_portal')
+            return redirect('/django-admin')
         else:
             messages.error(request, 'Invalid credentials or insufficient permissions.')
     return render(request, 'website/login.html')
