@@ -58,7 +58,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   border: 3px solid rgba(255,255,255,0.3);
 }
 .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy); font-size: 18px; }
-.site-title { color: #fff; font-family: 'old english text mt'; font-size: 1.4rem; font-weight: 700; }
+.site-title { color: #fff; font-family: 'old english text mt'; font-size: 1.4rem; }
 .site-subtitle { color: var(--gold-light); font-size: 13px; font-weight: 500; }
 .icon-color a { color: #fff }
 
