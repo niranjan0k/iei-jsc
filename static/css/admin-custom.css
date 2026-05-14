@@ -1,0 +1,14 @@
+.bg-body {
+    background-color: #19386a !important;
+}
+.btn {
+    --bs-btn-color: #fff;
+}
+@media (min-width: 576px) {
+  .d-sm-inline {
+    display: none !important;
+  }
+}
+.info {
+    color: #fff;
+}
