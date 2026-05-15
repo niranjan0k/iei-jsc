@@ -109,12 +109,6 @@
           <span class="mx-3">|</span>
         </span>
         {% endfor %}
-        {% for ann in announcements %}
-        <span class="marquee-item">
-          {% if ann.link %}<a href="{{ ann.link }}" target="_blank">{{ ann.title }}</a>{% else %}{{ ann.title }}{% endif %}
-          <span class="mx-3">|</span>
-        </span>
-        {% endfor %}
       </div>
     </div>
   </div>
@@ -165,8 +159,8 @@
       <div class="col-lg-2 col-md-4">
         <h6 class="footer-heading">Documents</h6>
         <ul class="footer-links">
-          <li><a href="https://www.ieindia.org/web/byelawsRegulation">Bye Laws</a></li>
-          <li><a href="https://www.ieindia.org/web/codeofethics">Code of Ethics</a></li>
+          <li><a href="https://www.ieindia.org/web/byelawsRegulation" target="_blank">Bye Laws</a></li>
+          <li><a href="https://www.ieindia.org/web/codeofethics" target="_blank">Code of Ethics</a></li>
           <!-- <li><a href="{% url 'downloads' %}">Downloads</a></li> -->
           <li><a href="{{ skill_dev_url }}" target="_blank">IEI Headquarter</a></li>
         </ul>

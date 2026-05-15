@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django.db.models import BLANK_CHOICE_DASH
 from .models import (
     CarouselImage, Announcement, Event, EventPhoto,
     Download, Member, LeaderProfile, ContactMessage
@@ -39,7 +40,6 @@ class AnnouncementAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
     list_filter = ['is_active']
     search_fields = ['title', 'content']
-
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
@@ -87,3 +87,6 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+# set default dropdown choice to "Select" instead of --------
+BLANK_CHOICE_DASH[:] = [('', 'Select')]

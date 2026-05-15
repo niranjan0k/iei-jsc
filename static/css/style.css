@@ -110,7 +110,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 .marquee-track {
   display: flex;
   white-space: nowrap;
-  animation: marquee 35s linear infinite;
+  animation: marquee 25s linear infinite;
 }
 .marquee-track:hover { animation-play-state: paused; }
 .marquee-item { display: inline-block; padding-right: 10px; }
@@ -508,4 +508,8 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 }
 .mt-8 { 
   margin-top: 8rem !important; 
+}
+
+.text-justify {
+  text-align: justify !important;
 }
