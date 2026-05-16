@@ -9,5 +9,5 @@ def site_settings(request):
         'facebook_url': 'https://facebook.com',
         'twitter_url': 'https://twitter.com',
         'linkedin_url': 'https://linkedin.com',
-        'skill_dev_url': 'https://www.ieindia.org',
+        'skill_dev_url': 'https://sites.google.com/view/skillupgradation/home',
     }
