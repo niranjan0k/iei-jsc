@@ -62,10 +62,10 @@ class DownloadAdmin(admin.ModelAdmin):
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ['name', 'designation', 'category', 'sort_order']
+    list_display = ['name', 'designation', 'category', 'sort_order', 'mobile_no', 'membership_no']
     list_editable = ['sort_order']
     list_filter = ['category']
-    search_fields = ['name', 'designation']
+    search_fields = ['name', 'designation', 'mobile_no', 'membership_no']
 
 
 @admin.register(LeaderProfile)

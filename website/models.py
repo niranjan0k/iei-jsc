@@ -97,10 +97,12 @@ class Member(models.Model):
     designation = models.CharField(max_length=255, verbose_name='Designation')
     category = models.CharField(max_length=50, choices=CATEGORY_CHOICES, verbose_name='Category')
     photo = models.ImageField(upload_to='members/', blank=True, null=True, verbose_name='Photo')
+    mobile_no = models.CharField(max_length=20, blank=True, verbose_name='Mobile No')
+    membership_no = models.CharField(max_length=50, blank=True, verbose_name='Membership No')
     sort_order = models.IntegerField(default=0, verbose_name='Sort Order')
 
     class Meta:
-        ordering = ['category', 'sort_order', 'name']
+        ordering = ['category', 'sort_order', 'name', 'mobile_no', 'membership_no']
         verbose_name = 'Member'
         verbose_name_plural = 'Members'
 
