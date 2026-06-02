@@ -14,6 +14,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <!-- Custom CSS -->
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<style>
+  /* ── Dropdown nav styles ── */
+  .main-nav .dropdown-menu{
+    border:none;border-radius:10px;box-shadow:0 8px 28px rgba(14,26,58,.18);
+    padding:8px 0;min-width:230px;margin-top:6px;
+    animation:fadeDown .18s ease;
+  }
+  @keyframes fadeDown{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:translateY(0)}}
+  .main-nav .dropdown-item{
+    padding:10px 20px;font-size:13.5px;font-weight:500;color:#1a3a6e;
+    display:flex;align-items:center;gap:10px;
+  }
+  .main-nav .dropdown-item i{width:18px;color:#c9a84c;flex-shrink:0}
+  .main-nav .dropdown-item:hover{background:#f0f4ff;color:#0e1a3a}
+  .main-nav .dropdown-item.active{background:#1a3a6e;color:#fff}
+  .main-nav .dropdown-item.active i{color:#c9a84c}
+  .main-nav .dropdown-divider{margin:4px 0;border-color:#e5e7eb}
+  .sub-header{
+    font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+    color:#9ca3af;padding:8px 20px 4px;
+  }
+  .dropdown-item-external::after{
+    content:' ↗';font-size:11px;color:#9ca3af;margin-left:auto;
+  }
+  /* Sub-submenu (Members > Sub Committee) */
+  .dropdown-submenu{position:relative}
+  .dropdown-submenu .dropdown-menu{
+    top:0;left:100%;margin-top:-8px;margin-left:2px;
+    display:none;
+  }
+  .dropdown-submenu:hover .dropdown-menu{display:block}
+  .dropdown-submenu > .dropdown-item::after{
+    content:'\F285';font-family:'bootstrap-icons';margin-left:auto;font-size:12px;color:#9ca3af;
+  }
+</style>
 {% block extra_head %}{% endblock %}
 </head>
 <body>
@@ -88,8 +123,35 @@
         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}"><i class="bi bi-house-fill me-1"></i>Home</a></li>
         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">About Us</a></li>
         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'members' %}active{% endif %}" href="{% url 'members' %}">Members</a></li>
+        <!-- Membership dropdown (external links to IEI HQ) -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            Membership
+          </a>
+          <ul class="dropdown-menu">
+            <li><p class="sub-header">Join IEI</p></li>
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/webui/iei/membership/corporate-membership.aspx" target="_blank" rel="noopener">
+              <i class="bi bi-building-fill"></i> Corporate Membership
+            </a></li>
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/webui/iei/membership/technician-chapter.aspx" target="_blank" rel="noopener">
+              <i class="bi bi-tools"></i> Technician Chapter
+            </a></li>
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/web/network/studentchapters#schapter" target="_blank" rel="noopener">
+              <i class="bi bi-mortarboard-fill"></i> Student Chapter
+            </a></li>
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/web/imember" target="_blank" rel="noopener">
+              <i class="bi bi-bank2"></i> Institutional Membership
+            </a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/webui/iei/membership/know-your-member.aspx" target="_blank" rel="noopener">
+              <i class="bi bi-search-heart"></i> Know Your Member
+            </a></li>
+          </ul>
+        </li>
         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'events' or request.resolver_match.url_name == 'event_detail' %}active{% endif %}" href="{% url 'events' %}">Event Gallery</a></li>
         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'downloads' %}active{% endif %}" href="{% url 'downloads' %}">Downloads</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'careers' %}active{% endif %}" href="{% url 'careers' %}">Careers</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'guest_house' %}active{% endif %}" href="{% url 'guest_house' %}">Guest House</a></li>
         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'contact' %}active{% endif %}" href="{% url 'contact' %}">Contact Us</a></li>
       </ul>
     </div>

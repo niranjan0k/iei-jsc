@@ -3,9 +3,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.utils import timezone
 from .models import (
     CarouselImage, Announcement, Event, Download,
-    Member, LeaderProfile, ContactMessage
+    Member, LeaderProfile, ContactMessage, Vacancy, Room, GuestBooking
 )
 from .forms import ContactForm
 
@@ -118,3 +119,145 @@ def admin_portal(request):
         'recent_events': recent_events,
         'recent_members': recent_members,
     })
+
+
+def careers(request):
+    vacancies = Vacancy.objects.filter(is_active=True)
+    return render(request, 'website/careers.html', {'vacancies': vacancies})
+
+
+def guest_house(request):
+    rooms = Room.objects.all()
+    check_in = request.GET.get('check_in', '')
+    check_out = request.GET.get('check_out', '')
+    num_people = request.GET.get('num_people', '')
+
+    room_availability = []
+    searched = False
+
+    if check_in and check_out:
+        searched = True
+        from datetime import date
+        try:
+            ci = date.fromisoformat(check_in)
+            co = date.fromisoformat(check_out)
+            for room in rooms:
+                # Check if any booking overlaps with requested dates
+                conflicting = room.bookings.filter(
+                    check_in__lt=co,
+                    check_out__gt=ci,
+                )
+                room_availability.append({
+                    'room': room,
+                    'available': not conflicting.exists(),
+                })
+        except ValueError:
+            messages.error(request, 'Invalid date format. Please use the date picker.')
+            for room in rooms:
+                room_availability.append({'room': room, 'available': None})
+    else:
+        for room in rooms:
+            room_availability.append({'room': room, 'available': None})
+
+    return render(request, 'website/guest_house.html', {
+        'room_availability': room_availability,
+        'check_in': check_in,
+        'check_out': check_out,
+        'num_people': num_people,
+        'searched': searched,
+    })
+
+
+# ── Careers admin ──────────────────────────────────────────────────────────────
+
+@login_required
+def admin_vacancies(request):
+    vacancies = Vacancy.objects.all()
+    return render(request, 'website/admin_vacancies.html', {'vacancies': vacancies})
+
+
+@login_required
+def admin_vacancy_add(request):
+    if request.method == 'POST':
+        title = request.POST.get('title', '').strip()
+        department = request.POST.get('department', '').strip()
+        description = request.POST.get('description', '').strip()
+        qualifications = request.POST.get('qualifications', '').strip()
+        last_date = request.POST.get('last_date') or None
+        if title and description:
+            Vacancy.objects.create(
+                title=title, department=department,
+                description=description, qualifications=qualifications,
+                last_date=last_date,
+            )
+            messages.success(request, f'Vacancy "{title}" created successfully.')
+            return redirect('admin_vacancies')
+        else:
+            messages.error(request, 'Title and description are required.')
+    return render(request, 'website/admin_vacancy_form.html')
+
+
+@login_required
+def admin_vacancy_delete(request, pk):
+    vacancy = get_object_or_404(Vacancy, pk=pk)
+    if request.method == 'POST':
+        title = vacancy.title
+        vacancy.delete()
+        messages.success(request, f'Vacancy "{title}" deleted.')
+    return redirect('admin_vacancies')
+
+
+@login_required
+def admin_vacancy_toggle(request, pk):
+    vacancy = get_object_or_404(Vacancy, pk=pk)
+    vacancy.is_active = not vacancy.is_active
+    vacancy.save()
+    return redirect('admin_vacancies')
+
+
+# ── Guest House admin ──────────────────────────────────────────────────────────
+
+@login_required
+def admin_guesthouse(request):
+    rooms = Room.objects.prefetch_related('bookings').all()
+    bookings = GuestBooking.objects.select_related('room').order_by('-check_in')
+    today = timezone.now().date()
+    return render(request, 'website/admin_guesthouse.html', {
+        'rooms': rooms,
+        'bookings': bookings,
+        'today': today,
+    })
+
+
+@login_required
+def admin_booking_add(request):
+    rooms = Room.objects.all()
+    if request.method == 'POST':
+        room_id = request.POST.get('room')
+        guest_name = request.POST.get('guest_name', '').strip()
+        contact_number = request.POST.get('contact_number', '').strip()
+        num_people = request.POST.get('num_people', 1)
+        check_in = request.POST.get('check_in')
+        check_out = request.POST.get('check_out')
+        notes = request.POST.get('notes', '').strip()
+        if room_id and guest_name and check_in and check_out:
+            room = get_object_or_404(Room, pk=room_id)
+            GuestBooking.objects.create(
+                room=room, guest_name=guest_name,
+                contact_number=contact_number, num_people=num_people,
+                check_in=check_in, check_out=check_out, notes=notes,
+            )
+            messages.success(request, f'Booking for {guest_name} added.')
+            return redirect('admin_guesthouse')
+        else:
+            messages.error(request, 'Please fill all required fields.')
+    return render(request, 'website/admin_booking_form.html', {'rooms': rooms})
+
+
+@login_required
+def admin_booking_delete(request, pk):
+    booking = get_object_or_404(GuestBooking, pk=pk)
+    if request.method == 'POST':
+        booking.delete()
+        messages.success(request, 'Booking deleted.')
+    return redirect('admin_guesthouse')

@@ -3,7 +3,8 @@ from django.utils.html import format_html
 from django.db.models import BLANK_CHOICE_DASH
 from .models import (
     CarouselImage, Announcement, Event, EventPhoto,
-    Download, Member, LeaderProfile, ContactMessage
+    Download, Member, LeaderProfile, ContactMessage,
+    Vacancy, Room, GuestBooking
 )
 
 
@@ -87,6 +88,32 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
+
+@admin.register(Vacancy)
+class VacancyAdmin(admin.ModelAdmin):
+    list_display = ['title', 'department', 'last_date', 'is_active', 'created_at']
+    list_editable = ['is_active']
+    list_filter = ['is_active']
+    search_fields = ['title', 'department', 'description']
+
+
+@admin.register(Room)
+class RoomAdmin(admin.ModelAdmin):
+    list_display = ['room_number', 'name', 'description']
+
+
+class GuestBookingInline(admin.TabularInline):
+    model = GuestBooking
+    extra = 0
+    fields = ['guest_name', 'contact_number', 'num_people', 'check_in', 'check_out', 'notes']
+
+
+@admin.register(GuestBooking)
+class GuestBookingAdmin(admin.ModelAdmin):
+    list_display = ['guest_name', 'room', 'check_in', 'check_out', 'num_people', 'contact_number']
+    list_filter = ['room', 'check_in']
+    search_fields = ['guest_name', 'contact_number']
+    date_hierarchy = 'check_in'
 
 # set default dropdown choice to "Select" instead of --------
 BLANK_CHOICE_DASH[:] = [('', 'Select')]

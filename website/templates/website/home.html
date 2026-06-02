@@ -140,6 +140,14 @@
 
   /* Section heading bar (matches wireframe boxes) */
   .home-row-1, .leader-row, .home-carousel{margin-bottom:0}
+
+  .read-more-btn{
+    display:inline-flex;align-items:center;gap:6px;
+    background:transparent;border:2px solid #c9a84c;color:#c9a84c;
+    padding:8px 20px;border-radius:30px;font-weight:600;font-size:13px;
+    cursor:pointer;margin:10px 0;transition:all .2s ease;
+  }
+  .read-more-btn:hover{background:#c9a84c;color:#0e1a3a}
 </style>
 {% endblock %}
 
@@ -160,12 +168,15 @@
       <div class="carousel-inner">
         {% for img in carousels %}
         <div class="carousel-item {% if forloop.first %}active{% endif %}">
+          <div class="carousel-placeholder d-flex align-items-center justify-content-center"
+               style="background:url('{% static "img/iei_building.jpg" %}') center center/cover no-repeat;">
           <img src="{{ img.image.url }}" alt="{{ img.caption }}">
           {% if img.caption %}
           <div class="carousel-caption">
             <h2 class="carousel-title">{{ img.caption }}</h2>
           </div>
           {% endif %}
+        </div>
         </div>
         {% empty %}
         {% for i in "12345" %}
@@ -276,6 +287,11 @@
         <h3>{{ chairman.name }}</h3>
         <p class="leader-sub">{{ chairman.title }}</p>
         <p class="leader-bio">{{ chairman.bio|truncatewords:60 }}</p>
+        {% if chairman.bio|length > 200 %}
+        <button class="read-more-btn" data-bs-toggle="modal" data-bs-target="#chairmanModal">
+          <i class="bi bi-book-half me-1"></i>Read Full Profile
+        </button>
+        {% endif %}
         <p class="leader-quote">"Together we shall continue to advance engineering excellence and serve the engineering community of Jharkhand."</p>
       </div>
     </div>
@@ -293,6 +309,11 @@
         <h3>{{ secretary.name }}</h3>
         <p class="leader-sub">{{ secretary.title }}</p>
         <p class="leader-bio">{{ secretary.bio|truncatewords:60 }}</p>
+        {% if chairman.bio|length > 200 %}
+        <button class="read-more-btn" data-bs-toggle="modal" data-bs-target="#secretaryModal">
+          <i class="bi bi-book-half me-1"></i>Read Full Profile
+        </button>
+        {% endif %}
         <p class="leader-quote">"Our mission is to nurture engineering talent and provide a vibrant platform for professional growth across all disciplines."</p>
       </div>
       <div class="leader-photo-box">
@@ -305,6 +326,54 @@
     </div>
   </div>
 </section>
+{% endif %}
+
+{% if chairman %}
+<div class="modal fade" id="chairmanModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="border-radius:14px;overflow:hidden">
+      <div class="modal-header" style="background:linear-gradient(135deg,#1a3a6e,#0e1a3a);color:#fff;border:none;padding:24px 28px">
+        <div>
+          <span style="display:inline-block;background:#c9a84c;color:#0e1a3a;font-size:11px;font-weight:800;padding:3px 14px;border-radius:4px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Chairman, IEI Jharkhand State Centre</span>
+          <h4 class="modal-title mb-0" style="font-weight:700">{{ chairman.name }}</h4>
+          <p style="margin:4px 0 0;font-size:13px;opacity:.8;font-style:italic">{{ chairman.title }}</p>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:28px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+        {% if chairman.photo %}
+        <img src="{{ chairman.photo.url }}" alt="{{ chairman.name }}"
+          style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #c9a84c;flex-shrink:0">
+        {% endif %}
+        <div style="flex:1;min-width:250px;color:#374151;font-size:15px;line-height:1.8">{{ chairman.bio|linebreaks }}</div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+{% if secretary %}
+<div class="modal fade" id="secretaryModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content" style="border-radius:14px;overflow:hidden">
+      <div class="modal-header" style="background:linear-gradient(135deg,#1a3a6e,#0e1a3a);color:#fff;border:none;padding:24px 28px">
+        <div>
+          <span style="display:inline-block;background:#c9a84c;color:#0e1a3a;font-size:11px;font-weight:800;padding:3px 14px;border-radius:4px;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Honorary Secretary, IEI Jharkhand State Centre</span>
+          <h4 class="modal-title mb-0" style="font-weight:700">{{ secretary.name }}</h4>
+          <p style="margin:4px 0 0;font-size:13px;opacity:.8;font-style:italic">{{ secretary.title }}</p>
+        </div>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" style="padding:28px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+        {% if secretary.photo %}
+        <img src="{{ secretary.photo.url }}" alt="{{ secretary.name }}"
+          style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #c9a84c;flex-shrink:0">
+        {% endif %}
+        <div style="flex:1;min-width:250px;color:#374151;font-size:15px;line-height:1.8">{{ secretary.bio|linebreaks }}</div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endif %}
 
 {% endblock %}
