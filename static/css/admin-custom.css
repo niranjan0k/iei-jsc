@@ -12,3 +12,497 @@
 .info {
     color: #fff;
 }
+
+/* ============================================================
+   IEI Jharkhand — Custom Admin Stylesheet
+   Theme: Navy #1a3a6e  |  Gold #c9a84c
+   ============================================================ */
+
+/* ---- Root tokens ---- */
+:root {
+  --iei-navy:      #1a3a6e;
+  --iei-navy-mid:  #234d99;
+  --iei-navy-light:#eef2f9;
+  --iei-gold:      #c9a84c;
+  --iei-border:    #d0d9ec;
+  --iei-radius:    6px;
+  --iei-shadow:    0 2px 8px rgba(26,58,110,.10);
+  --iei-h:         36px;
+}
+
+/* ============================================================
+   TOP NAVBAR SEARCH INPUTS
+   ============================================================ */
+.navbar-nav .nav-item form .form-control {
+  border-radius: var(--iei-radius);
+  border: 1.5px solid rgba(255,255,255,.35);
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  font-size: .82rem;
+}
+.navbar-nav .nav-item form .form-control::placeholder { color: rgba(255,255,255,.6); }
+.navbar-nav .nav-item form .btn {
+  background: var(--iei-gold);
+  border: none;
+  border-radius: var(--iei-radius);
+  color: var(--iei-navy);
+  font-weight: 600;
+}
+
+/* ============================================================
+   CONTENT HEADER  (page title + breadcrumb)
+   ============================================================ */
+.content-header { padding: 16px 24px 0; }
+.content-header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--iei-navy);
+  letter-spacing: -.2px;
+}
+.breadcrumb {
+  background: transparent;
+  font-size: .82rem;
+  padding: 0; margin: 0;
+}
+.breadcrumb-item a { color: var(--iei-navy-mid); }
+.breadcrumb-item.active { color: #6c757d; }
+
+/* ============================================================
+   OBJECT TOOLS  ("Add …" button top-right)
+   ============================================================ */
+.object-tools { margin: 0; }
+.object-tools li { list-style: none; }
+.object-tools a,
+.object-tools a.addlink {
+  background: linear-gradient(135deg, var(--iei-navy) 0%, var(--iei-navy-mid) 100%) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--iei-radius) !important;
+  padding: 9px 20px !important;
+  font-size: .85rem !important;
+  font-weight: 600 !important;
+  letter-spacing: .3px;
+  box-shadow: var(--iei-shadow) !important;
+  transition: filter .15s, box-shadow .15s !important;
+  text-decoration: none !important;
+}
+.object-tools a:hover { filter: brightness(1.12); box-shadow: 0 4px 14px rgba(26,58,110,.22) !important; }
+.object-tools a::before { display: none !important; }
+
+/* ============================================================
+   FILTER + SEARCH BAR
+   ============================================================ */
+#change-list-filters {
+  padding-bottom: 5px !important;
+}
+#changelist-search {
+  background: var(--iei-navy-light);
+  border: 1.5px solid var(--iei-border);
+  border-radius: var(--iei-radius);
+  padding: 8px 14px;
+  margin-bottom: 10px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+/* If the search form has NO visible controls (no filters, no search), hide the bar */
+#changelist-search:not(:has(.search-filter)):not(:has(input[type="text"])):not(:has([type="submit"])) {
+  display: none !important;
+}
+
+/* Search text input */
+#searchbar,
+#changelist-search input[type="text"] {
+  border: 1.5px solid var(--iei-border) !important;
+  border-radius: var(--iei-radius) !important;
+  height: var(--iei-h) !important;
+  padding: 0 12px !important;
+  font-size: .85rem !important;
+  background: #fff !important;
+  flex: 1 1 180px;
+  min-width: 0;
+  transition: border-color .15s, box-shadow .15s;
+}
+#searchbar:focus,
+#changelist-search input[type="text"]:focus {
+  border-color: var(--iei-navy-mid) !important;
+  box-shadow: 0 0 0 3px rgba(35,77,153,.15) !important;
+  outline: none !important;
+}
+
+/* Search button */
+#changelist-search [type="submit"] {
+  background: var(--iei-gold) !important;
+  color: var(--iei-navy) !important;
+  border: none !important;
+  border-radius: var(--iei-radius) !important;
+  height: var(--iei-h) !important;
+  padding: 0 20px !important;
+  font-weight: 700 !important;
+  font-size: .85rem !important;
+  cursor: pointer;
+  transition: filter .15s !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#changelist-search [type="submit"]:hover { filter: brightness(1.1); }
+
+/* Filter select (Active/All) — the hidden native select */
+.search-filter,
+#changelist-search select {
+  height: var(--iei-h) !important;
+  border: 1.5px solid var(--iei-border) !important;
+  border-radius: var(--iei-radius) !important;
+  padding: 0 10px !important;
+  font-size: .85rem !important;
+  background: #fff !important;
+  min-width: 120px;
+}
+
+/* Filter form-group wrapper — remove extra margin */
+#changelist-search .form-group {
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+  flex-shrink: 0;
+}
+
+/* ============================================================
+   SELECT2  (filter dropdown)
+   ============================================================ */
+.select2-container--default .select2-selection--single {
+  height: var(--iei-h) !important;
+  border: 1.5px solid var(--iei-border) !important;
+  border-radius: var(--iei-radius) !important;
+  background: #fff !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  line-height: calc(var(--iei-h) - 2px) !important;
+  font-size: .85rem !important;
+  color: #222 !important;
+  padding-left: 10px !important;
+  padding-right: 28px !important;
+}
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+  height: calc(var(--iei-h) - 2px) !important;
+  right: 6px !important;
+}
+.select2-container--default.select2-container--focus .select2-selection--single {
+  border-color: var(--iei-navy-mid) !important;
+  box-shadow: 0 0 0 3px rgba(35,77,153,.15) !important;
+}
+.select2-dropdown {
+  border: 1.5px solid var(--iei-border) !important;
+  border-radius: var(--iei-radius) !important;
+  box-shadow: var(--iei-shadow) !important;
+}
+.select2-results__option--highlighted[aria-selected] {
+  background-color: var(--iei-navy) !important;
+  color: #fff !important;
+}
+.select2-search--dropdown .select2-search__field {
+  border: 1.5px solid var(--iei-border) !important;
+  border-radius: 4px !important;
+  font-size: .83rem !important;
+}
+
+/* ============================================================
+   ACTIONS ROW  (Select action | Go | N of M selected)
+   ============================================================ */
+.actions {
+  background: #fff;
+  border: 1.5px solid var(--iei-border);
+  border-radius: var(--iei-radius);
+  padding: 8px 14px;
+  margin-bottom: 0;
+  display: flex !important;
+  align-items: center !important;
+  flex-wrap: nowrap !important;
+  gap: 8px;
+}
+.actions label { font-weight: 600; color: #555; font-size: .83rem; margin: 0; }
+.actions select,
+.actions .select2-container { min-width: 200px !important; flex-shrink: 0; }
+/* "Go" button */
+.actions [type="submit"],
+.actions button[type="submit"] {
+  background: var(--iei-navy) !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: var(--iei-radius) !important;
+  height: 34px !important;
+  padding: 0 20px !important;
+  font-weight: 600 !important;
+  font-size: .84rem !important;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: filter .15s !important;
+}
+.actions [type="submit"]:hover { filter: brightness(1.2); }
+/* "N of M selected" counter — pushed to the right */
+.action-counter,
+span.action-counter,
+.actions .help-text {
+  font-size: .82rem;
+  color: #6c757d;
+  margin-left: auto !important;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   CHANGELIST TABLE
+   ============================================================ */
+#result_list {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1.5px solid var(--iei-border);
+  border-radius: var(--iei-radius);
+  overflow: hidden;
+  width: 100%;
+  font-size: .87rem;
+  margin-top: 10px;
+}
+#result_list thead th {
+  background: var(--iei-navy) !important;
+  color: #fff !important;
+  border-bottom: none !important;
+  padding: 10px 14px !important;
+  font-weight: 600;
+  font-size: .83rem;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+#result_list thead th a,
+#result_list thead th a:hover { color: #fff !important; text-decoration: none; }
+#result_list thead th.sorted a { color: var(--iei-gold) !important; }
+
+#result_list tbody tr:nth-child(even) { background: var(--iei-navy-light); }
+#result_list tbody tr:hover { background: #e4ecf7 !important; }
+#result_list tbody td {
+  padding: 9px 14px !important;
+  border-bottom: 1px solid #e8edf5 !important;
+  color: #2d3748 !important;
+  vertical-align: middle !important;
+}
+#result_list tbody tr:last-child td { border-bottom: none !important; }
+#result_list tbody td a { color: var(--iei-navy-mid); font-weight: 500; text-decoration: none; transition: color .15s; }
+#result_list tbody td a:hover { color: var(--iei-gold); text-decoration: underline; }
+
+#result_list input[type="checkbox"],
+#result_list .action-checkbox input[type="checkbox"] {
+  width: 15px; height: 15px;
+  accent-color: var(--iei-navy);
+  cursor: pointer;
+}
+
+/* Pagination */
+.paginator { padding: 10px 16px; border-top: 1.5px solid var(--iei-border); font-size: .82rem; color: #6c757d; }
+.paginator a { color: var(--iei-navy-mid); font-weight: 600; text-decoration: none; }
+.paginator a:hover { color: var(--iei-gold); }
+.paginator .this-page { background: var(--iei-navy); color: #fff; border-radius: 4px; padding: 2px 7px; }
+
+/* ============================================================
+   CHANGE FORM — field labels
+   ============================================================ */
+.form-group label,
+.form-row label,
+.field-box label {
+  font-weight: 600;
+  color: var(--iei-navy);
+  font-size: .875rem;
+  display: flex;
+  align-items: center;
+  padding-top: 6px;
+}
+
+/* ============================================================
+   CHANGE FORM — inputs FULL WIDTH inside col-sm-9
+   ============================================================ */
+/* Every input-like element fills its container */
+.col-sm-9 input[type="text"],
+.col-sm-9 input[type="email"],
+.col-sm-9 input[type="url"],
+.col-sm-9 input[type="number"],
+.col-sm-9 input[type="password"],
+.col-sm-9 input[type="date"],
+.col-sm-9 input[type="time"],
+.col-sm-9 input[type="datetime-local"],
+.col-sm-9 textarea,
+.col-sm-9 select,
+.col-sm-9 .vTextField,
+.col-sm-9 .vLargeTextField,
+.col-sm-9 .vDateField,
+.col-sm-9 .vTimeField {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* General input styling */
+input[type="text"],
+input[type="email"],
+input[type="url"],
+input[type="number"],
+input[type="password"],
+input[type="date"],
+input[type="time"],
+textarea,
+select,
+.vTextField,
+.vDateField,
+.vTimeField {
+  border: 1.5px solid var(--iei-border) !important;
+  border-radius: var(--iei-radius) !important;
+  font-size: .875rem !important;
+  padding: 6px 10px !important;
+  transition: border-color .15s, box-shadow .15s !important;
+}
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="url"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus,
+.vDateField:focus,
+.vTimeField:focus {
+  border-color: var(--iei-navy-mid) !important;
+  box-shadow: 0 0 0 3px rgba(35,77,153,.12) !important;
+  outline: none !important;
+}
+
+/* File input */
+input[type="file"] {
+  border: 1.5px dashed var(--iei-border) !important;
+  border-radius: var(--iei-radius) !important;
+  background: var(--iei-navy-light) !important;
+  padding: 6px 10px !important;
+  font-size: .85rem !important;
+  width: 100% !important;
+  cursor: pointer;
+}
+input[type="file"]:hover { border-color: var(--iei-navy-mid) !important; }
+
+/* Date/time widget rows — stack cleanly */
+.datetime p { display: flex; align-items: center; gap: 8px; margin: 0 0 6px; }
+.datetime p label { min-width: 46px; font-weight: 600; color: #555; font-size: .83rem; padding-top: 0; }
+.datetime .datetimeshortcuts { font-size: .8rem; white-space: nowrap; color: var(--iei-navy-mid); }
+.datetime .datetimeshortcuts a { color: var(--iei-navy-mid); text-decoration: none; font-weight: 600; }
+.datetime .datetimeshortcuts a:hover { color: var(--iei-gold); }
+
+/* Textarea minimum height */
+textarea { min-height: 100px; resize: vertical; }
+
+/* ============================================================
+   JAZZY ACTIONS (Save / Delete sidebar panel)
+   ============================================================ */
+#jazzy-actions {
+  background: var(--iei-navy-light);
+  border: 1.5px solid var(--iei-border);
+  border-radius: var(--iei-radius);
+  padding: 14px 16px;
+}
+/* The flex row that holds all buttons */
+#jazzy-actions .d-flex {
+  flex-wrap: nowrap !important;   /* keep all on one line */
+  align-items: center !important;
+  gap: 8px !important;
+}
+/* Save (success) */
+#jazzy-actions .btn-success {
+  background: linear-gradient(135deg, var(--iei-navy) 0%, var(--iei-navy-mid) 100%) !important;
+  border: none !important;
+  color: #fff !important;
+  font-weight: 700 !important;
+  font-size: .84rem !important;
+  padding: 7px 18px !important;
+  border-radius: var(--iei-radius) !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#jazzy-actions .btn-success:hover { filter: brightness(1.12); }
+/* Save and add / Save and continue (info) */
+#jazzy-actions .btn-info {
+  background: var(--iei-gold) !important;
+  border: none !important;
+  color: var(--iei-navy) !important;
+  font-weight: 600 !important;
+  font-size: .84rem !important;
+  padding: 7px 14px !important;
+  border-radius: var(--iei-radius) !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+#jazzy-actions .btn-info:hover { filter: brightness(1.08); }
+/* Delete (danger) — pushed to the right automatically */
+#jazzy-actions .btn-danger {
+  background: transparent !important;
+  border: 1.5px solid #dc3545 !important;
+  color: #dc3545 !important;
+  font-weight: 600 !important;
+  font-size: .84rem !important;
+  padding: 6px 14px !important;
+  border-radius: var(--iei-radius) !important;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: auto !important;  /* push Delete to far right */
+}
+#jazzy-actions .btn-danger:hover {
+  background: #dc3545 !important;
+  color: #fff !important;
+}
+
+/* ============================================================
+   INLINE TABULAR (event photos, etc.)
+   ============================================================ */
+.inline-group .tabular table thead th {
+  background: var(--iei-navy-light);
+  color: var(--iei-navy);
+  font-weight: 600;
+  font-size: .83rem;
+  padding: 8px 12px;
+  border-bottom: 2px solid var(--iei-border);
+}
+.inline-group h2 {
+  color: var(--iei-navy);
+  font-size: 1rem;
+  font-weight: 700;
+  border-bottom: 2px solid var(--iei-gold);
+  padding-bottom: 6px;
+}
+.add-row a { color: var(--iei-navy-mid) !important; font-weight: 600; font-size: .83rem; }
+
+/* ============================================================
+   SIDEBAR NAV
+   ============================================================ */
+.nav-sidebar .nav-item.active > .nav-link,
+.nav-sidebar .nav-link.active {
+  background: rgba(201,168,76,.18) !important;
+  color: var(--iei-gold) !important;
+  border-left: 3px solid var(--iei-gold);
+  font-weight: 600;
+}
+.nav-sidebar .nav-link:hover {
+  background: rgba(201,168,76,.10) !important;
+  color: var(--iei-gold) !important;
+}
+
+/* ============================================================
+   DASHBOARD INFO BOXES
+   ============================================================ */
+.info-box { border-radius: var(--iei-radius) !important; box-shadow: var(--iei-shadow) !important; }
+.info-box .info-box-icon { border-radius: var(--iei-radius) 0 0 var(--iei-radius) !important; }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  #changelist-search { flex-wrap: wrap; }
+  .actions { flex-wrap: wrap !important; }
+  .actions .select2-container { min-width: 100% !important; }
+  #jazzy-actions .d-flex { flex-wrap: wrap !important; }
+  #jazzy-actions .btn-danger { margin-left: 0 !important; }
+}

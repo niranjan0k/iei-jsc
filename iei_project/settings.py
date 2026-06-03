@@ -85,7 +85,7 @@ JAZZMIN_SETTINGS = {
     # UI Tweaks
     'related_modal_active': True,
     'custom_css': None,
-    'custom_js': None,
+    'custom_js': 'js/admin_custom.js',
     'use_google_fonts_cdn': True,
     'show_ui_builder': False,
 
