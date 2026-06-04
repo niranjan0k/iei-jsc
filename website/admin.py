@@ -12,7 +12,7 @@ from django.contrib.auth.models import User
 class CustomUserAdmin(UserAdmin):
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if not request.user.is_superuser or request.user.username != 'super_admin':
+        if not request.user.username != 'super_admin':
             qs = qs.exclude(username='super_admin')
         return qs
 
