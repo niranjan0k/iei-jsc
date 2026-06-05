@@ -36,13 +36,31 @@ def about(request):
 
 
 def members(request):
+    sub = request.GET.get('sub', '')
     executive = Member.objects.filter(category='executive')
-    subcommittee = Member.objects.filter(category='subcommittee')
     senior = Member.objects.filter(category='senior_engineers')
+
+    # Sub committee types
+    sub_committee_types = Member.SUB_COMMITTEE_CHOICES
+    subcommittee = Member.objects.filter(category='subcommittee')
+
+    if sub:
+        subcommittee_filtered = subcommittee.filter(sub_committee_type=sub)
+    else:
+        subcommittee_filtered = subcommittee
+
+    # Group sub committee by type for display
+    sub_groups = {}
+    for code, label in sub_committee_types:
+        members_in_group = subcommittee.filter(sub_committee_type=code)
+        if members_in_group.exists():
+            sub_groups[code] = {'label': label, 'members': members_in_group}
+
     return render(request, 'website/members.html', {
         'executive': executive,
-        'subcommittee': subcommittee,
         'senior': senior,
+        'subcommittee': subcommittee,
+        'sub_groups': sub_groups,
     })
 
 

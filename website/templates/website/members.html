@@ -1,7 +1,20 @@
 {% extends 'website/base.html' %}
 {% load static %}
 {% block title %}Members – IEI Jharkhand State Centre{% endblock %}
-
+{% block extra_head %}
+<style>
+  .sub-section-head{
+    background:linear-gradient(90deg,#1a3a6e,#2d5096);color:#fff;
+    padding:12px 20px;border-radius:8px 8px 0 0;font-weight:700;
+    display:flex;align-items:center;gap:10px;font-size:15px;
+    border-left:4px solid #c9a84c;
+  }
+  .sub-section-body{
+    border:1px solid #e5e7eb;border-top:none;
+  border-radius:0 0 8px 8px;padding:20px;margin-bottom:20px
+  }
+</style>
+{% endblock %}
 {% block content %}
 <div class="page-header">
   <div class="container-xl">
@@ -69,31 +82,34 @@
         {% endif %}
       </div>
 
-      <!-- Sub Committee -->
-      <div class="tab-pane fade" id="sub" role="tabpanel">
-        {% if subcommittee %}
-        <div class="row g-4">
-          {% for m in subcommittee %}
-          <div class="col-md-3 col-sm-6">
-            <div class="member-card text-center">
-              <div class="member-avatar-wrap">
-                {% if m.photo %}
-                <img src="{{ m.photo.url }}" alt="{{ m.name }}" class="member-avatar">
-                {% else %}
-                <div class="member-avatar-placeholder"><i class="bi bi-person-fill"></i></div>
-                {% endif %}
+      <!-- Sub Committee — grouped by sub-committee type -->
+      <div class="tab-pane fade {% if active_tab == 'subcommittee' %}show active{% endif %}" id="sub">
+        {% if sub_groups %}
+          {% for code, group in sub_groups.items %}
+          <div class="sub-section-head">
+            <i class="bi {% if group.icon %}{{ group.icon }}{% else %}bi-diagram-3-fill{% endif %}"></i>
+            {{ group.label }}
+            <span class="ms-2 badge rounded-pill" style="background:#c9a84c;color:#1a3a6e;font-size:.75rem;">{{ group.members|length }}</span>
+          </div>
+          <div class="sub-section-body">
+            <div class="row g-3">
+              {% for m in group.members %}
+              <div class="col-md-3 col-sm-6">
+                <div class="member-card text-center">
+                  <div class="member-avatar-wrap">
+                    {% if m.photo %}<img src="{{ m.photo.url }}" alt="{{ m.name }}" class="member-avatar">
+                    {% else %}<div class="member-avatar-placeholder"><i class="bi bi-person-fill"></i></div>{% endif %}
+                  </div>
+                  <h6 class="member-name mt-3 mb-1">{{ m.name }}</h6>
+                  <p class="member-designation">{{ m.designation }}</p>
+                </div>
               </div>
-              <h6 class="member-name mt-3 mb-1">{{ m.name }}</h6>
-              <p class="member-designation">{{ m.designation }}</p>
+              {% endfor %}
             </div>
           </div>
           {% endfor %}
-        </div>
         {% else %}
-        <div class="empty-state">
-          <i class="bi bi-people"></i>
-          <h5>No Sub Committee members listed yet.</h5>
-        </div>
+        <div class="empty-state"><i class="bi bi-people"></i><h5>No Sub Committee members listed yet.</h5></div>
         {% endif %}
       </div>
 
