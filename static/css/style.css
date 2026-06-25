@@ -58,7 +58,17 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
   border: 3px solid rgba(255,255,255,0.3);
 }
 .logo-text { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--navy); font-size: 18px; }
-.site-title { color: #fff; font-family: 'old english text mt'; font-size: 1.4rem; }
+@font-face {
+    font-family: 'Olde English';           /* Give it a name (any name you like) */
+    src: url('../fonts/Olde English Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+.site-title { 
+    color: #fff;
+    font-family: 'Olde English', 'old english text mt';
+    font-size: 1.7rem; 
+  }
 .site-subtitle { color: var(--gold-light); font-size: 13px; font-weight: 500; }
 .icon-color a { color: #fff }
 
@@ -497,7 +507,7 @@ h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
 
 /* ---- Responsive ---- */
 @media (max-width: 368px) {
-  .site-title { font-size: 1.1rem; }
+  .site-title { font-size: 1.3rem; }
   .site-subtitle { font-size: 11px; }
   .hero-img, .carousel-placeholder { height: 280px; }
   .carousel-title { font-size: 1.1rem; }

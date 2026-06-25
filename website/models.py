@@ -1,12 +1,13 @@
 from django.db import models
 from django.utils import timezone
+from datetime import date
 
 
 class CarouselImage(models.Model):
     image = models.ImageField(upload_to='carousel/', verbose_name='Image')
     caption = models.CharField(max_length=255, blank=True, verbose_name='Caption')
     sort_order = models.IntegerField(default=0, verbose_name='Sort Order')
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now, blank=False, null=False)
 
     class Meta:
         ordering = ['sort_order', 'created_at']
@@ -22,10 +23,11 @@ class Announcement(models.Model):
     content = models.TextField(verbose_name='Content')
     link = models.URLField(blank=True, null=True, verbose_name='Link URL')
     is_active = models.BooleanField(default=True, verbose_name='Active')
-    created_at = models.DateTimeField(default=timezone.now)
+    announcement_date = models.DateField(default=date.today, verbose_name='Announcement Date')
+    created_at = models.DateTimeField(default=timezone.now, null=False, blank=False)
 
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['title', 'announcement_date', '-created_at']
         verbose_name = 'Announcement'
         verbose_name_plural = 'Announcements'
 
@@ -38,7 +40,7 @@ class Event(models.Model):
     description = models.TextField(verbose_name='Description')
     event_date = models.DateField(verbose_name='Event Date')
     cover_image = models.ImageField(upload_to='events/covers/', blank=True, null=True, verbose_name='Cover Image')
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now, null=False, blank=False)
 
     class Meta:
         ordering = ['-event_date']
@@ -69,7 +71,7 @@ class Download(models.Model):
     name = models.CharField(max_length=255, verbose_name='Document Name')
     file = models.FileField(upload_to='downloads/', verbose_name='File')
     file_type = models.CharField(max_length=50, blank=True, verbose_name='File Type')
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now, null=False, blank=False)
 
     class Meta:
         ordering = ['name']
@@ -168,7 +170,7 @@ class Vacancy(models.Model):
     qualifications = models.TextField(blank=True, verbose_name='Qualifications Required')
     last_date = models.DateField(blank=True, null=True, verbose_name='Application Last Date')
     is_active = models.BooleanField(default=True, verbose_name='Active / Visible')
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now, null=False, blank=False)
 
     class Meta:
         ordering = ['-created_at']
@@ -206,7 +208,7 @@ class GuestBooking(models.Model):
     check_in = models.DateField(verbose_name='Check-In Date')
     check_out = models.DateField(verbose_name='Check-Out Date')
     notes = models.TextField(blank=True, verbose_name='Notes')
-    created_at = models.DateTimeField(default=timezone.now)
+    created_at = models.DateTimeField(default=timezone.now, null=False, blank=False)
 
     class Meta:
         ordering = ['-check_in']

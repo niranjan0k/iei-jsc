@@ -42,6 +42,7 @@ class EventPhotoInline(admin.TabularInline):
 
 @admin.register(CarouselImage)
 class CarouselImageAdmin(admin.ModelAdmin):
+    exclude = ('created_at',)  # Hide from form
     list_display = ['caption', 'sort_order', 'preview', 'created_at']
     list_editable = ['sort_order']
     ordering = ['sort_order']
@@ -55,13 +56,15 @@ class CarouselImageAdmin(admin.ModelAdmin):
 
 @admin.register(Announcement)
 class AnnouncementAdmin(admin.ModelAdmin):
-    list_display = ['title', 'is_active', 'link', 'created_at']
+    exclude = ('created_at',)  # Hide from form
+    list_display = ['title', 'is_active', 'link', 'announcement_date', 'created_at']
     list_editable = ['is_active']
     list_filter = ['is_active']
     search_fields = ['title', 'content']
 
 @admin.register(Event)
 class EventAdmin(admin.ModelAdmin):
+    exclude = ('created_at',)  # Hide from form
     list_display = ['name', 'event_date', 'photo_count', 'created_at']
     search_fields = ['name', 'description']
     inlines = [EventPhotoInline]
@@ -75,6 +78,7 @@ class EventAdmin(admin.ModelAdmin):
 
 @admin.register(Download)
 class DownloadAdmin(admin.ModelAdmin):
+    exclude = ('created_at',)  # Hide from form
     list_display = ['name', 'file_type', 'file', 'created_at']
     search_fields = ['name']
 
@@ -109,6 +113,7 @@ class ContactMessageAdmin(admin.ModelAdmin):
 
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
+    exclude = ('created_at',)  # Hide from form
     list_display = ['title', 'department', 'last_date', 'is_active', 'created_at']
     list_editable = ['is_active']
     list_filter = ['is_active']
@@ -128,6 +133,7 @@ class GuestBookingInline(admin.TabularInline):
 
 @admin.register(GuestBooking)
 class GuestBookingAdmin(admin.ModelAdmin):
+    exclude = ('created_at',)  # Hide from form
     list_display = ['guest_name', 'room', 'check_in', 'check_out', 'num_people', 'contact_number']
     list_filter = ['room', 'check_in']
     search_fields = ['guest_name', 'contact_number']

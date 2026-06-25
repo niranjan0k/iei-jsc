@@ -259,7 +259,7 @@
             <a href="https://www.ieindia.org/web/publication" target="_blank" class="service-item">
               <i class="bi bi-book-fill"></i><span>Journal &amp; Publications</span>
             </a>
-            <a href="https://www.ieindia.org/" target="_blank" class="service-item">
+            <a href="https://www.ieindia.org/web/publication#journal" target="_blank" class="service-item">
               <i class="bi bi-cloud-upload"></i><span>Submit your Paper to IEI-Springer</span>
             </a>
           </div>
@@ -286,12 +286,15 @@
         <span class="leader-role-tag">Chairman, IEI Jharkhand</span>
         <h3>{{ chairman.name }}</h3>
         <p class="leader-sub">{{ chairman.title }}</p>
-        <p class="leader-bio">{{ chairman.bio|truncatewords:60 }}</p>
-        {% if chairman.bio|length > 200 %}
-        <button class="read-more-btn" data-bs-toggle="modal" data-bs-target="#chairmanModal">
-          <i class="bi bi-book-half me-1"></i>Read Full Profile
-        </button>
+        <p class="leader-bio text-justify">{{ chairman.bio|truncatewords:60 }}
+        {% if chairman.bio|length > 200 %} 
+        <span>
+          <a style="cursor: pointer;font-weight: bold;" data-bs-toggle="modal" data-bs-target="#chairmanModal">
+          <i class="bi bi-book-half me-1"></i>Read More
+        </a>
+        </span>
         {% endif %}
+        </p>
         <p class="leader-quote">"Together we shall continue to advance engineering excellence and serve the engineering community of Jharkhand."</p>
       </div>
     </div>
@@ -308,12 +311,15 @@
         <span class="leader-role-tag">Honorary Secretary, IEI Jharkhand</span>
         <h3>{{ secretary.name }}</h3>
         <p class="leader-sub">{{ secretary.title }}</p>
-        <p class="leader-bio">{{ secretary.bio|truncatewords:60 }}</p>
+        <p class="leader-bio text-justify">{{ secretary.bio|truncatewords:60 }}
         {% if chairman.bio|length > 200 %}
-        <button class="read-more-btn" data-bs-toggle="modal" data-bs-target="#secretaryModal">
-          <i class="bi bi-book-half me-1"></i>Read Full Profile
-        </button>
+        <span>
+          <a style="cursor: pointer;font-weight: bold;" data-bs-toggle="modal" data-bs-target="#secretaryModal">
+          <i class="bi bi-book-half me-1"></i>Read More
+        </a>
+      </span>
         {% endif %}
+        </p>
         <p class="leader-quote">"Our mission is to nurture engineering talent and provide a vibrant platform for professional growth across all disciplines."</p>
       </div>
       <div class="leader-photo-box">
@@ -345,7 +351,7 @@
         <img src="{{ chairman.photo.url }}" alt="{{ chairman.name }}"
           style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #c9a84c;flex-shrink:0">
         {% endif %}
-        <div style="flex:1;min-width:250px;color:#374151;font-size:15px;line-height:1.8">{{ chairman.bio|linebreaks }}</div>
+        <div style="flex:1;min-width:250px;color:#374151;font-size:15px;line-height:1.8;text-align: justify;">{{ chairman.bio|linebreaks }}</div>
       </div>
     </div>
   </div>
@@ -369,7 +375,7 @@
         <img src="{{ secretary.photo.url }}" alt="{{ secretary.name }}"
           style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:4px solid #c9a84c;flex-shrink:0">
         {% endif %}
-        <div style="flex:1;min-width:250px;color:#374151;font-size:15px;line-height:1.8">{{ secretary.bio|linebreaks }}</div>
+        <div style="flex:1;min-width:250px;color:#374151;font-size:15px;line-height:1.8;text-align: justify;">{{ secretary.bio|linebreaks }}</div>
       </div>
     </div>
   </div>

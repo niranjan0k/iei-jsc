@@ -48,6 +48,12 @@
   .dropdown-submenu > .dropdown-item::after{
     content:'\F285';font-family:'bootstrap-icons';margin-left:auto;font-size:12px;color:#9ca3af;
   }
+  .footer-social-link:hover .footer-social {
+      color: var(--navy); /* Facebook blue */
+      background: var(--gold);
+      transform: scale(1.1);
+      transition: all 0.3s ease;
+  }
 </style>
 {% block extra_head %}{% endblock %}
 </head>
@@ -130,22 +136,25 @@
           </a>
           <ul class="dropdown-menu">
             <li><p class="sub-header">Join IEI</p></li>
-            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/webui/iei/membership/corporate-membership.aspx" target="_blank" rel="noopener">
+            <li><a class="dropdown-item dropdown-item-external" href="https://ipanel.ieindia.org/WebUI/IEI-RegistrationForMembApp.aspx" target="_blank" rel="noopener">
               <i class="bi bi-building-fill"></i> Corporate Membership
             </a></li>
-            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/webui/iei/membership/technician-chapter.aspx" target="_blank" rel="noopener">
-              <i class="bi bi-tools"></i> Technician Chapter
+            <li><a class="dropdown-item dropdown-item-external" href="https://ipanel.ieindia.org/WebUI/IEI-RegistrationForMembApp.aspx" target="_blank" rel="noopener">
+              <i class="bi bi-mortarboard-fill"></i> Student Member
             </a></li>
-            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/web/network/studentchapters#schapter" target="_blank" rel="noopener">
-              <i class="bi bi-mortarboard-fill"></i> Student Chapter
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/web/becomemember#" target="_blank" rel="noopener">
+              <i class="bi bi-tools"></i> Member Technologist
             </a></li>
-            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/web/imember" target="_blank" rel="noopener">
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/web/becomemember#" target="_blank" rel="noopener">
+              <i class="bi bi-tools"></i> Associate Member Technologist 
+            </a></li>
+            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/web/imember#" target="_blank" rel="noopener">
               <i class="bi bi-bank2"></i> Institutional Membership
             </a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/webui/iei/membership/know-your-member.aspx" target="_blank" rel="noopener">
+            <!-- <li><hr class="dropdown-divider"></li> -->
+            <!-- <li><a class="dropdown-item dropdown-item-external" href="https://www.ieindia.org/webui/iei/membership/know-your-member.aspx" target="_blank" rel="noopener">
               <i class="bi bi-search-heart"></i> Know Your Member
-            </a></li>
+            </a></li> -->
           </ul>
         </li>
         <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'events' or request.resolver_match.url_name == 'event_detail' %}active{% endif %}" href="{% url 'events' %}">Event Gallery</a></li>
@@ -191,24 +200,19 @@
 {% endif %}
 {% block content %}{% endblock %}
 </main>
-
 <!-- Footer -->
 <footer class="site-footer mt-5">
   <div class="container-xl">
     <div class="row g-4 py-4">
-      <div class="col-lg-4">
-        <div class="footer-brand mb-3">
-          <div class="logo-circle-sm me-2 d-inline-flex"><span class="logo-text-sm">IEI</span></div>
-          <span class="fw-bold text-gold">IEI Jharkhand State Centre</span>
-        </div>
-        <p class="small">The Institution of Engineers (India) is the country's largest multi-disciplinary engineering body, providing a platform for engineering professionals to advance and innovate.</p>
-        <div class="d-flex gap-3 mt-3">
-          <a href="{{ facebook_url }}" target="_blank" class="footer-social"><i class="bi bi-facebook"></i></a>
-          <a href="{{ twitter_url }}" target="_blank" class="footer-social"><i class="bi bi-twitter-x"></i></a>
-          <a href="{{ linkedin_url }}" target="_blank" class="footer-social"><i class="bi bi-linkedin"></i></a>
-        </div>
+      <div class="col-lg-3 col-md-3">
+        <h6 class="footer-heading">Follow us on</h6>
+        <ul style="list-style:none;padding: 0;">
+          <li class="my-2" style="cursor: pointer;"><a href="{{ facebook_url }}" target="_blank" style="color: rgba(255,255,255,0.7);text-decoration: none;" class="footer-social-link"><span class="footer-social"><i class="bi bi-facebook"></i></span>&nbsp;Facebook</a></li>
+          <li class="my-2" style="cursor: pointer;"><a href="{{ twitter_url }}" target="_blank" style="color: rgba(255,255,255,0.7);text-decoration: none;" class="footer-social-link"><span class="footer-social"><i class="bi bi-twitter-x"></i></span>&nbsp;Twitter-X</a></li>
+          <li class="my-2" style="cursor: pointer;"><a href="{{ linkedin_url }}" target="_blank" style="color: rgba(255,255,255,0.7);text-decoration: none;" class="footer-social-link"><span class="footer-social"><i class="bi bi-linkedin"></i></span>&nbsp;LinkedIn</a></li>
+        </ul>
       </div>
-      <div class="col-lg-2 col-md-4">
+      <div class="col-lg-3 col-md-3">
         <h6 class="footer-heading">Quick Links</h6>
         <ul class="footer-links">
           <li><a href="{% url 'home' %}">Home</a></li>
@@ -218,19 +222,19 @@
           <!-- <li><a href="{% url 'contact' %}">Contact</a></li> -->
         </ul>
       </div>
-      <div class="col-lg-2 col-md-4">
+      <div class="col-lg-3 col-md-3">
         <h6 class="footer-heading">Documents</h6>
         <ul class="footer-links">
           <li><a href="https://www.ieindia.org/web/byelawsRegulation" target="_blank">Bye Laws</a></li>
           <li><a href="https://www.ieindia.org/web/codeofethics" target="_blank">Code of Ethics</a></li>
           <!-- <li><a href="{% url 'downloads' %}">Downloads</a></li> -->
-          <li><a href="{{ skill_dev_url }}" target="_blank">IEI Headquarter</a></li>
+          <li><a href="https://www.ieindia.org" target="_blank">IEI Headquarter</a></li>
         </ul>
       </div>
-      <div class="col-lg-4 col-md-4">
+      <div class="col-lg-3 col-md-3">
         <h6 class="footer-heading">Contact</h6>
         <ul class="list-unstyled small">
-          <li class="mb-2"><i class="bi bi-geo-alt-fill text-gold me-2"></i>{{ site_address }}</li>
+          <li class="mb-2 d-flex"><i class="bi bi-geo-alt-fill text-gold me-2"></i><p style="margin-bottom: 0;">{{ site_address }}</p></li>
           <li class="mb-2"><i class="bi bi-telephone-fill text-gold me-2"></i>{{ site_phone }}</li>
           <li class="mb-2"><i class="bi bi-envelope-fill text-gold me-2"></i>{{ site_email }}</li>
         </ul>
