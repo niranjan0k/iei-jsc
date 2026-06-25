@@ -38,7 +38,7 @@ def about(request):
 def members(request):
     sub = request.GET.get('sub', '')
     executive = Member.objects.filter(category='executive')
-    senior = Member.objects.filter(category='senior_engineers')
+    senior = Member.objects.filter(category='senior_members')
 
     # Sub committee types
     sub_committee_types = Member.SUB_COMMITTEE_CHOICES
