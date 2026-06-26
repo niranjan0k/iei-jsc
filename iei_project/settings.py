@@ -42,7 +42,7 @@ JAZZMIN_SETTINGS = {
     # Top Menu
     'topmenu_links': [
         {'name': 'View Website', 'url': '/', 'new_window': True, 'icon': 'fas fa-globe'},
-        {'name': 'Admin Portal', 'url': '/django-admin/', 'icon': 'fas fa-tachometer-alt'},
+        # {'name': 'Admin Portal', 'url': '/django-admin/', 'icon': 'fas fa-tachometer-alt'},
         {'name': 'Contact Messages', 'model': 'website.contactmessage'},
     ],
 
