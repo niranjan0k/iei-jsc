@@ -78,6 +78,8 @@ JAZZMIN_SETTINGS = {
         'website.LeaderProfile': 'fas fa-user-tie',
         'website.Download': 'fas fa-file-download',
         'website.ContactMessage': 'fas fa-envelope',
+        'website.Careers': 'fas fa-briefcase',
+        'website.JobApplication': 'fas fa-file-alt',
     },
     'default_icon_parents': 'fas fa-chevron-circle-right',
     'default_icon_children': 'fas fa-circle',

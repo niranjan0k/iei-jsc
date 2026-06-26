@@ -175,10 +175,32 @@ class Vacancy(models.Model):
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Vacancy'
-        verbose_name_plural = 'Vacancies'
+        verbose_name_plural = 'Careers'
 
     def __str__(self):
         return self.title
+
+class JobApplication(models.Model):
+    STATUS_CHOICES = [
+        ('new', 'New'),
+        ('reviewed', 'Reviewed'),
+        ('shortlisted', 'Shortlisted'),
+        ('rejected', 'Rejected'),
+    ]
+    vacancy = models.ForeignKey(Vacancy, on_delete=models.CASCADE, related_name='applications', verbose_name='Vacancy')
+    applicant_name = models.CharField(max_length=255, verbose_name='Full Name')
+    email = models.EmailField(verbose_name='Email Address')
+    phone = models.CharField(max_length=20, verbose_name='Phone Number')
+    cover_letter = models.TextField(blank=True, verbose_name='Cover Letter / Message')
+    resume = models.FileField(upload_to='applications/resumes/', verbose_name='Resume (PDF/DOC)')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='new', verbose_name='Status')
+    applied_at = models.DateTimeField(default=timezone.now)
+    class Meta:
+        ordering = ['-applied_at']
+        verbose_name = 'Job Application'
+        verbose_name_plural = 'Job Applications'
+    def __str__(self):
+        return f'{self.applicant_name} → {self.vacancy.title}'
 
 
 class Room(models.Model):

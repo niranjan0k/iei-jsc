@@ -8,6 +8,6 @@ admin.site.site_title = 'IEI Admin Portal'
 admin.site.index_title = 'Content Management'
 
 urlpatterns = [
-    path('django-admin/', admin.site.urls),
+    path('admin/', admin.site.urls),
     path('', include('website.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

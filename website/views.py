@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.utils import timezone
 from .models import (
-    CarouselImage, Announcement, Event, Download,
+    CarouselImage, Announcement, Event, Download, JobApplication,
     Member, LeaderProfile, ContactMessage, Vacancy, Room, GuestBooking
 )
 from .forms import ContactForm
@@ -100,14 +100,14 @@ def contact(request):
 
 def login_view(request):
     if request.user.is_authenticated:
-        return redirect('admin_portal')
+        return redirect('/admin')
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None and user.is_staff:
             login(request, user)
-            return redirect('/django-admin')
+            return redirect('/admin')
         else:
             messages.error(request, 'Invalid credentials or insufficient permissions.')
     return render(request, 'website/login.html')
@@ -142,6 +142,39 @@ def admin_portal(request):
 def careers(request):
     vacancies = Vacancy.objects.filter(is_active=True)
     return render(request, 'website/careers.html', {'vacancies': vacancies})
+
+# ── Job Application (public) ───────────────────────────────────────────────────
+def apply_for_vacancy(request, pk):
+    vacancy = get_object_or_404(Vacancy, pk=pk, is_active=True)
+    if request.method == 'POST':
+        name = request.POST.get('applicant_name', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
+        cover = request.POST.get('cover_letter', '').strip()
+        resume = request.FILES.get('resume')
+        errors = []
+        if not name:
+            errors.append('Full name is required.')
+        if not email:
+            errors.append('Email address is required.')
+        if not phone:
+            errors.append('Phone number is required.')
+        if not resume:
+            errors.append('Please attach your resume.')
+        if errors:
+            messages.error(request, ' '.join(errors))
+        else:
+            JobApplication.objects.create(
+                vacancy=vacancy,
+                applicant_name=name,
+                email=email,
+                phone=phone,
+                cover_letter=cover,
+                resume=resume,
+            )
+            messages.success(request, f'Your application for "{vacancy.title}" has been submitted successfully. We will get in touch with you soon.')
+        return redirect('careers')
+    return redirect('careers')
 
 
 def guest_house(request):
@@ -231,6 +264,29 @@ def admin_vacancy_toggle(request, pk):
     vacancy.is_active = not vacancy.is_active
     vacancy.save()
     return redirect('admin_vacancies')
+
+# ── Job Applications admin ──────────────────────────────────────────────────────
+@login_required
+def admin_applications(request):
+    status_filter = request.GET.get('status', '')
+    apps = JobApplication.objects.select_related('vacancy').order_by('-applied_at')
+    if status_filter:
+        apps = apps.filter(status=status_filter)
+    return render(request, 'website/admin_applications.html', {
+        'applications': apps,
+        'status_filter': status_filter,
+        'status_choices': JobApplication.STATUS_CHOICES,
+    })
+@login_required
+def admin_application_status(request, pk):
+    app = get_object_or_404(JobApplication, pk=pk)
+    if request.method == 'POST':
+        new_status = request.POST.get('status')
+        if new_status in dict(JobApplication.STATUS_CHOICES):
+            app.status = new_status
+            app.save()
+            messages.success(request, f'Status updated to "{app.get_status_display()}".')
+    return redirect('admin_applications')
 
 
 # ── Guest House admin ──────────────────────────────────────────────────────────

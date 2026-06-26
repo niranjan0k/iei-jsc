@@ -23,4 +23,9 @@ urlpatterns = [
     path('admin-portal/guest-house/', views.admin_guesthouse, name='admin_guesthouse'),
     path('admin-portal/guest-house/add/', views.admin_booking_add, name='admin_booking_add'),
     path('admin-portal/guest-house/<int:pk>/delete/', views.admin_booking_delete, name='admin_booking_delete'),
+    # Job applications (public)
+    path('careers/<int:pk>/apply/', views.apply_for_vacancy, name='apply_for_vacancy'),
+    # Job applications admin
+    path('admin-portal/applications/', views.admin_applications, name='admin_applications'),
+    path('admin-portal/applications/<int:pk>/status/', views.admin_application_status, name='admin_application_status'),
 ]

@@ -4,7 +4,7 @@ from django.db.models import BLANK_CHOICE_DASH
 from .models import (
     CarouselImage, Announcement, Event, EventPhoto,
     Download, Member, LeaderProfile, ContactMessage,
-    Vacancy, Room, GuestBooking
+    Vacancy, Room, GuestBooking, JobApplication
 )
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
@@ -111,13 +111,38 @@ class ContactMessageAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         return False
 
+
 @admin.register(Vacancy)
 class VacancyAdmin(admin.ModelAdmin):
     exclude = ('created_at',)  # Hide from form
     list_display = ['title', 'department', 'last_date', 'is_active', 'created_at']
+    list_display = ['title', 'department', 'last_date', 'is_active', 'application_count', 'created_at']
     list_editable = ['is_active']
     list_filter = ['is_active']
     search_fields = ['title', 'department', 'description']
+    def application_count(self, obj):
+        count = obj.applications.count()
+        return format_html('<span style="font-weight:600;color:#1a3a6e;">{}</span>', count)
+    application_count.short_description = 'Applications'
+
+@admin.register(JobApplication)
+class JobApplicationAdmin(admin.ModelAdmin):
+    list_display = ['applicant_name', 'email', 'phone', 'vacancy_link', 'status', 'resume_link', 'applied_at']
+    list_filter = ['status', 'vacancy']
+    search_fields = ['applicant_name', 'email', 'phone']
+    # list_editable = ['status']
+    readonly_fields = ['applicant_name', 'email', 'phone', 'vacancy', 'cover_letter', 'resume', 'applied_at']
+    ordering = ['-applied_at']
+    def vacancy_link(self, obj):
+        return obj.vacancy.title
+    vacancy_link.short_description = 'Position'
+    def resume_link(self, obj):
+        if obj.resume:
+            return format_html('<a href="{}" target="_blank"><i class="fas fa-file-pdf"></i> Download</a>', obj.resume.url)
+        return '—'
+    resume_link.short_description = 'Resume'
+    def has_add_permission(self, request):
+        return False
 
 
 @admin.register(Room)
