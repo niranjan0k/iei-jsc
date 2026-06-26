@@ -1,0 +1,135 @@
+{% extends 'website/base.html' %}
+{% load static %}
+{% block title %}Job Applications – Admin Portal{% endblock %}
+
+{% block extra_head %}
+<style>
+  .portal-header{background:linear-gradient(135deg,#1a3a6e,#0e1a3a);color:#fff;padding:32px 0 28px;margin-bottom:32px;}
+  .portal-header h1{font-size:2rem;font-weight:800;margin:0;}
+  .portal-header p{margin:8px 0 0;opacity:.8;font-size:.95rem;}
+  .filter-bar{background:#eef2f9;border:1.5px solid #d0d9ec;border-radius:8px;padding:14px 20px;margin-bottom:24px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .filter-bar label{font-weight:600;color:#1a3a6e;font-size:.85rem;margin:0;}
+  .app-table{background:#fff;border:1.5px solid #d0d9ec;border-radius:10px;overflow:hidden;}
+  .app-table thead th{background:#1a3a6e;color:#fff;padding:11px 14px;font-size:.82rem;font-weight:600;white-space:nowrap;border:none;}
+  .app-table tbody td{padding:10px 14px;font-size:.85rem;border-bottom:1px solid #e8edf5;vertical-align:middle;}
+  .app-table tbody tr:last-child td{border-bottom:none;}
+  .app-table tbody tr:hover{background:#eef2f9;}
+  .badge-new{background:#1a3a6e;color:#fff;}
+  .badge-reviewed{background:#6366f1;color:#fff;}
+  .badge-shortlisted{background:#16a34a;color:#fff;}
+  .badge-rejected{background:#dc2626;color:#fff;}
+  .status-form select{border:1.5px solid #d0d9ec;border-radius:5px;font-size:.8rem;padding:3px 8px;cursor:pointer;}
+  .status-form button{background:#c9a84c;border:none;border-radius:5px;padding:4px 12px;font-size:.8rem;font-weight:700;color:#1a3a6e;cursor:pointer;}
+  .resume-link{color:#1a3a6e;font-weight:600;font-size:.82rem;text-decoration:none;}
+  .resume-link:hover{color:#c9a84c;}
+  .empty-state{text-align:center;padding:60px 20px;color:#9ca3af;}
+  .empty-state i{font-size:3rem;display:block;margin-bottom:12px;}
+  .back-link{color:#c9a84c;text-decoration:none;font-weight:600;}
+  .back-link:hover{color:#b8943d;}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="portal-header">
+  <div class="container-xl">
+    <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+      <div>
+        <h1><i class="bi bi-file-earmark-person-fill me-3"></i>Job Applications</h1>
+        <p>Review and manage all applications received for posted vacancies.</p>
+      </div>
+      <a href="{% url 'admin_portal' %}" class="back-link">
+        <i class="bi bi-arrow-left-circle me-1"></i>Back to Dashboard
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="container-xl pb-5">
+
+  {% if messages %}
+  {% for msg in messages %}
+  <div class="alert alert-{% if msg.tags == 'error' %}danger{% else %}success{% endif %} alert-dismissible fade show">
+    {{ msg }}<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  {% endfor %}
+  {% endif %}
+
+  <!-- Filter bar -->
+  <div class="filter-bar">
+    <label><i class="bi bi-funnel-fill me-1"></i>Filter by Status:</label>
+    <a href="?status=" class="btn btn-sm {% if not status_filter %}btn-primary{% else %}btn-outline-secondary{% endif %}">All</a>
+    {% for code, label in status_choices %}
+    <a href="?status={{ code }}" class="btn btn-sm {% if status_filter == code %}btn-primary{% else %}btn-outline-secondary{% endif %}">{{ label }}</a>
+    {% endfor %}
+    <span class="ms-auto text-muted" style="font-size:.83rem;">{{ applications|length }} application{{ applications|length|pluralize }}</span>
+  </div>
+
+  {% if applications %}
+  <div class="app-table">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Applicant</th>
+          <th>Contact</th>
+          <th>Position Applied</th>
+          <th>Resume</th>
+          <th>Applied On</th>
+          <th>Status</th>
+          <th>Update</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for app in applications %}
+        <tr>
+          <td class="text-muted" style="font-size:.78rem;">{{ forloop.counter }}</td>
+          <td>
+            <div style="font-weight:600;color:#1a3a6e;">{{ app.applicant_name }}</div>
+            {% if app.cover_letter %}
+            <small class="text-muted" title="{{ app.cover_letter }}" style="cursor:help;">
+              <i class="bi bi-chat-left-text me-1"></i>Has cover letter
+            </small>
+            {% endif %}
+          </td>
+          <td>
+            <div><i class="bi bi-envelope me-1 text-muted"></i><a href="mailto:{{ app.email }}" style="color:#234d99;font-size:.83rem;">{{ app.email }}</a></div>
+            <div><i class="bi bi-telephone me-1 text-muted"></i><span style="font-size:.83rem;">{{ app.phone }}</span></div>
+          </td>
+          <td style="font-weight:500;">{{ app.vacancy.title }}</td>
+          <td>
+            {% if app.resume %}
+            <a href="{{ app.resume.url }}" target="_blank" class="resume-link">
+              <i class="bi bi-file-earmark-arrow-down me-1"></i>Download
+            </a>
+            {% else %}—{% endif %}
+          </td>
+          <td style="font-size:.82rem;color:#6c757d;white-space:nowrap;">{{ app.applied_at|date:"d M Y" }}<br>{{ app.applied_at|time:"h:i A" }}</td>
+          <td>
+            <span class="badge rounded-pill badge-{{ app.status }}">{{ app.get_status_display }}</span>
+          </td>
+          <td>
+            <form method="post" action="{% url 'admin_application_status' app.pk %}" class="status-form d-flex gap-1 align-items-center">
+              {% csrf_token %}
+              <select name="status">
+                {% for code, label in status_choices %}
+                <option value="{{ code }}" {% if app.status == code %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+              </select>
+              <button type="submit" title="Save status">✓</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <i class="bi bi-inbox"></i>
+    <h5 class="text-navy fw-bold">No applications yet</h5>
+    <p>Applications submitted through the Careers page will appear here.</p>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}
