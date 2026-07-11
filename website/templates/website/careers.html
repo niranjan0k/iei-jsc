@@ -1,6 +1,6 @@
 {% extends 'website/base.html' %}
 {% load static %}
-{% block title %}Careers – IEI Jharkhand State Centre{% endblock %}
+{% block title %}Careers - IEI Jharkhand State Centre{% endblock %}
 
 {% block extra_head %}
 <style>
@@ -145,7 +145,7 @@
                   <div class="col-md-6">
                     <label for="phone_{{ v.pk }}">Phone Number <span class="required-star">*</span></label>
                     <input type="tel" class="form-control mt-1" id="phone_{{ v.pk }}" name="phone"
-                      placeholder="+91 98765 43210" required>
+                      placeholder="99396XXXXX" required maxlength="10">
                   </div>
                   <div class="col-md-6">
                     <label for="resume_{{ v.pk }}">Resume <span class="required-star">*</span></label>
